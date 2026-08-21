@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Relatorios | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro report-intro">
+    <p class="eyebrow">Relatorio geral</p>
+    <h1>Visao consolidada do Paint Hub</h1>
+    <p>Resumo profissional dos modulos que possuem relatorio, reunindo chamados de TI e zeladoria em uma leitura unica.</p>
+</section>
+
+<section class="toolbar-panel">
+    <form method="get" class="filter-form metric-filter">
+        <label>
+            <span>Mes</span>
+            <input type="month" name="mes" value="{{ mes }}">
+        </label>
+        <button class="button" type="submit">Atualizar</button>
+        <a class="button button-secondary" href="{% url 'hub:exportar_relatorio_geral' %}?mes={{ mes }}">Exportar geral</a>
+    </form>
+</section>
+
+<section class="report-hero" aria-label="Resumo executivo">
+    <div>
+        <p class="eyebrow">Resumo executivo</p>
+        <h2>{{ total_geral }} itens registrados no periodo</h2>
+        <p>
+            {{ concluidos }} concluidos, {{ pendentes }} pendentes e {{ sem_ticket }} pendentes sem ticket oficial.
+            Taxa de conclusao: {{ taxa_conclusao }}%.
+        </p>
+    </div>
+    <div class="report-score">
+        <span>Conclusao</span>
+        <strong>{{ taxa_conclusao }}%</strong>
+    </div>
+</section>
+
+<section class="metric-grid" aria-label="Indicadores gerais">
+    <article class="metric-card"><span>Total geral</span><strong>{{ total_geral }}</strong></article>
+    <article class="metric-card"><span>Concluidos</span><strong>{{ concluidos }}</strong></article>
+    <article class="metric-card"><span>Pendentes</span><strong>{{ pendentes }}</strong></article>
+    <article class="metric-card"><span>Sem ticket</span><strong>{{ sem_ticket }}</strong></article>
+</section>
+
+<section class="report-section-grid">
+    <article class="table-panel">
+        <div class="table-header">
+            <h2>Volume por area</h2>
+        </div>
+        <div class="report-area-list">
+            {% for area in areas %}
+                <div class="report-area-row">
+                    <div>
+                        <strong>{{ area.nome }}</strong>
+                        <span>{{ area.pendentes }} pendentes</span>
+                    </div>
+                    <b>{{ area.total }}</b>
+                </div>
+            {% endfor %}
+        </div>
+    </article>
+
+    <article class="table-panel">
+        <div class="table-header">
+            <h2>Zeladoria por status</h2>
+        </div>
+        <div class="compact-table">
+            <table>
+                <thead><tr><th>Status</th><th>Total</th></tr></thead>
+                <tbody>
+                    {% for item in zeladoria_por_status %}
+                        <tr><td>{{ item.label }}</td><td>{{ item.total }}</td></tr>
+                    {% empty %}
+                        <tr><td colspan="2">Sem dados neste mes.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+
+<section class="detail-grid report-detail-grid">
+    <article class="table-panel">
+        <div class="table-header">
+            <h2>Itens consolidados</h2>
+        </div>
+        <div class="responsive-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Titulo</th>
+                        <th>Solicitante</th>
+                        <th>Referencia</th>
+                        <th>Status</th>
+                        <th>Ticket</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in itens_recentes %}
+                        <tr>
+                            <td>{{ item.area }}</td>
+                            <td>{{ item.titulo }}</td>
+                            <td>{{ item.solicitante }}</td>
+                            <td>{{ item.referencia }}</td>
+                            <td><span class="status-pill">{{ item.status }}</span></td>
+                            <td>{{ item.ticket|default:"-" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="6">Sem registros para o mes selecionado.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <aside class="report-side">
+        <article class="table-panel">
+            <div class="table-header">
+                <h2>TI por status</h2>
+            </div>
+            <div class="compact-table">
+                <table>
+                    <thead><tr><th>Status</th><th>Total</th></tr></thead>
+                    <tbody>
+                        {% for item in ti_por_status %}
+                            <tr><td>{{ item.label }}</td><td>{{ item.total }}</td></tr>
+                        {% empty %}
+                            <tr><td colspan="2">Sem dados neste mes.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="table-panel">
+            <div class="table-header">
+                <h2>TI por categoria</h2>
+            </div>
+            <div class="compact-table">
+                <table>
+                    <thead><tr><th>Categoria</th><th>Total</th></tr></thead>
+                    <tbody>
+                        {% for item in ti_por_categoria %}
+                            <tr><td>{{ item.label }}</td><td>{{ item.total }}</td></tr>
+                        {% empty %}
+                            <tr><td colspan="2">Sem dados neste mes.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </aside>
+</section>
+{% endblock %}

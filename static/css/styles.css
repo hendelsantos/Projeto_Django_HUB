@@ -117,6 +117,7 @@ a {
 
 .topbar nav {
     display: flex;
+    flex-wrap: wrap;
     gap: 6px;
     color: var(--muted);
     font-size: 14px;
@@ -577,6 +578,105 @@ td a {
     color: var(--muted);
 }
 
+.report-intro {
+    max-width: 860px;
+}
+
+.report-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(160px, 220px);
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 22px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, var(--surface) 0%, var(--primary-soft) 100%);
+    box-shadow: var(--shadow);
+}
+
+.report-hero h2 {
+    margin: 0;
+    font-size: clamp(26px, 4vw, 38px);
+    line-height: 1.1;
+}
+
+.report-hero p:not(.eyebrow) {
+    max-width: 760px;
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.report-score {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+.report-score span,
+.report-area-row span {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.report-score strong {
+    color: var(--primary);
+    font-size: 46px;
+    line-height: 1;
+}
+
+.report-section-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 20px;
+}
+
+.report-area-list,
+.report-side {
+    display: grid;
+    gap: 14px;
+}
+
+.report-area-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface-soft);
+}
+
+.report-area-row div {
+    display: grid;
+    gap: 5px;
+}
+
+.report-area-row b {
+    color: var(--primary);
+    font-size: 30px;
+}
+
+.compact-table table {
+    min-width: 0;
+}
+
+.report-detail-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+}
+
 .messages {
     margin-bottom: 18px;
 }
@@ -628,6 +728,9 @@ td a {
     }
 
     .detail-grid,
+    .report-detail-grid,
+    .report-hero,
+    .report-section-grid,
     .filter-form,
     .filter-form-wide,
     .metric-filter {

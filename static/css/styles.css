@@ -693,6 +693,33 @@ td a {
     color: var(--muted);
 }
 
+.photocloud-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.photocloud-panel {
+    display: grid;
+    gap: 18px;
+}
+
+.qr-card {
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.qr-card img {
+    display: block;
+    width: min(100%, 280px);
+    height: auto;
+}
+
 .report-intro {
     max-width: 860px;
 }
@@ -870,6 +897,7 @@ td a {
     }
 
     .detail-grid,
+    .photocloud-layout,
     .report-detail-grid,
     .report-hero,
     .report-section-grid,

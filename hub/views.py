@@ -2,6 +2,7 @@ from io import BytesIO
 
 import qrcode
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
@@ -62,18 +63,24 @@ def home(request):
             'status': 'Novo app',
             'icon': 'ARM',
         },
-        {
-            'name': 'PhotoCloud',
-            'description': 'Envie fotos pelo celular para uma galeria temporaria usando link direto ou QR Code.',
-            'details': 'Ideal para registrar evidencias visuais rapidamente: abra o QR Code no celular, informe nome e album, selecione as fotos e envie.',
-            'url_name': 'hub:photocloud',
-            'status': 'Fotos',
-            'icon': 'FOTO',
-        },
     ]
+
+    if request.user.is_authenticated:
+        tools.append(
+            {
+                'name': 'PhotoCloud',
+                'description': 'Envie fotos pelo celular para uma galeria temporaria usando link direto ou QR Code.',
+                'details': 'Ideal para registrar evidencias visuais rapidamente: abra o QR Code no celular, informe nome e album, selecione as fotos e envie.',
+                'url_name': 'hub:photocloud',
+                'status': 'Fotos',
+                'icon': 'FOTO',
+            }
+        )
+
     return render(request, 'hub/home.html', {'tools': tools})
 
 
+@login_required(login_url='admin:login')
 def photocloud(request):
     return render(
         request,
@@ -84,6 +91,7 @@ def photocloud(request):
     )
 
 
+@login_required(login_url='admin:login')
 def photocloud_qrcode(request):
     image = qrcode.make(PHOTO_CLOUD_URL)
     output = BytesIO()

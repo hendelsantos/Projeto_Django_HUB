@@ -19,6 +19,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
 
+admin.site.site_header = 'Paint Hub Admin'
+admin.site.site_title = 'Paint Hub Admin'
+admin.site.index_title = 'Painel de gerenciamento'
+
 urlpatterns = [
     path('', include('hub.urls')),
     path('extrator-scanner/', include('extrator_scanner.urls')),

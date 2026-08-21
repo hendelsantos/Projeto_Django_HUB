@@ -9,6 +9,7 @@
         const savedTheme = localStorage.getItem('paintHubTheme') || 'light';
         document.documentElement.dataset.theme = savedTheme;
     </script>
+    <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/theme.js' %}" defer></script>
 </head>
@@ -16,8 +17,7 @@
     <div class="site-shell">
         <header class="topbar">
             <a class="brand" href="{% url 'hub:home' %}">
-                <span class="brand-mark">H</span>
-                <span>Ferramentas digitais Paint Shop</span>
+                <img class="brand-logo" src="{% static 'img/logo.svg' %}" alt="Paint HUB Solucoes Digitais">
             </a>
             <div class="topbar-actions">
                 <nav aria-label="Navegacao principal">

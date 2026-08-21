@@ -50,6 +50,14 @@ def home(request):
             'status': 'Gestao',
             'icon': 'TI',
         },
+        {
+            'name': 'Gestao de Roupeiro',
+            'description': 'Controle armarios, usuarios, turnos e tamanhos de uniforme em um painel unico.',
+            'details': 'Use para saber quais armarios estao livres, ocupados, em manutencao e quais pessoas possuem armario cadastrado.',
+            'url_name': 'roupeiro:index',
+            'status': 'Novo app',
+            'icon': 'ARM',
+        },
     ]
     return render(request, 'hub/home.html', {'tools': tools})
 

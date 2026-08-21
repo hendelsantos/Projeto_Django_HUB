@@ -1,6 +1,7 @@
 from django.db.models import Count
 
 from chamados_ti.models import ChamadoTI
+from roupeiro.models import Armario
 from zeladoria.models import ChamadoZeladoria
 
 
@@ -27,6 +28,7 @@ def get_ti_source(ano, numero_mes):
         'slug': 'ti',
         'tipo': 'Metricas e exportacao',
         'tem_dados_consolidados': True,
+        'pendentes_rotulo': 'pendentes',
         'total': chamados.count(),
         'concluidos': chamados.filter(status=ChamadoTI.Status.CONCLUIDO).count(),
         'cancelados': chamados.filter(status=ChamadoTI.Status.CANCELADO).count(),
@@ -58,6 +60,7 @@ def get_zeladoria_source(ano, numero_mes):
         'slug': 'zeladoria',
         'tipo': 'Relatorio e exportacao',
         'tem_dados_consolidados': True,
+        'pendentes_rotulo': 'pendentes',
         'total': chamados.count(),
         'concluidos': chamados.filter(status=ChamadoZeladoria.Status.CONCLUIDO).count(),
         'cancelados': chamados.filter(status=ChamadoZeladoria.Status.CANCELADO).count(),
@@ -88,6 +91,7 @@ def get_extrator_scanner_source(_ano, _numero_mes):
         'slug': 'extrator-scanner',
         'tipo': 'Geracao de planilha',
         'tem_dados_consolidados': False,
+        'pendentes_rotulo': 'pendentes',
         'total': 0,
         'concluidos': 0,
         'cancelados': 0,
@@ -100,10 +104,49 @@ def get_extrator_scanner_source(_ano, _numero_mes):
     }
 
 
+def get_roupeiro_source(_ano, _numero_mes):
+    armarios = Armario.objects.all()
+    ocupados = armarios.filter(status=Armario.Status.OCUPADO).count()
+    total = armarios.count()
+    return {
+        'nome': 'Gestao de Roupeiro',
+        'slug': 'roupeiro',
+        'tipo': 'Metricas e exportacao',
+        'tem_dados_consolidados': True,
+        'pendentes_rotulo': 'livres',
+        'total': total,
+        'concluidos': ocupados,
+        'cancelados': armarios.filter(status=Armario.Status.INATIVO).count(),
+        'pendentes': armarios.filter(status=Armario.Status.LIVRE).count(),
+        'sem_ticket': armarios.filter(status=Armario.Status.MANUTENCAO).count(),
+        'por_status': count_by_field(armarios, 'status', Armario.Status.choices),
+        'por_categoria': count_by_field(armarios.exclude(turno=''), 'turno', Armario.Turno.choices),
+        'items': [
+            {
+                'area': 'Roupeiro',
+                'titulo': f'Armario #{armario.numero}',
+                'solicitante': armario.usuario or 'Sem usuario',
+                'referencia': armario.get_turno_display() if armario.turno else 'Sem turno',
+                'status': armario.get_status_display(),
+                'ticket': '',
+                'data': armario.atualizado_em,
+                'detalhe': (
+                    f"Camisa: {armario.get_tamanho_camisa_display() if armario.tamanho_camisa else '-'}; "
+                    f"Calca: {armario.get_tamanho_calca_display() if armario.tamanho_calca else '-'}; "
+                    f"Macacao: {armario.get_tamanho_macacao_display() if armario.tamanho_macacao else '-'}"
+                ),
+                'follow_up': armario.observacoes,
+            }
+            for armario in armarios
+        ],
+    }
+
+
 REPORT_SOURCE_BUILDERS = [
     get_ti_source,
     get_zeladoria_source,
     get_extrator_scanner_source,
+    get_roupeiro_source,
 ]
 
 

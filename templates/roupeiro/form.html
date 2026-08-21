@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }} | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Roupeiro</p>
+    <h1>{{ titulo }}</h1>
+    <p>Informe o numero do armario e preencha usuario, turno e tamanhos quando houver uma pessoa vinculada.</p>
+</section>
+
+<section class="upload-panel">
+    <form method="post" class="app-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <label class="form-field">
+                <span>{{ field.label }}</span>
+                {{ field }}
+                {% if field.errors %}
+                    <small>{{ field.errors|striptags }}</small>
+                {% endif %}
+            </label>
+        {% endfor %}
+
+        <div class="actions">
+            <button class="button" type="submit">Salvar armario</button>
+            {% if armario %}
+                <a class="button button-secondary" href="{% url 'roupeiro:detalhe' armario.pk %}">Cancelar</a>
+            {% else %}
+                <a class="button button-secondary" href="{% url 'roupeiro:index' %}">Voltar</a>
+            {% endif %}
+        </div>
+    </form>
+</section>
+{% endblock %}

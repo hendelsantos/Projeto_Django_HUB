@@ -28,6 +28,7 @@ urlpatterns = [
     path('extrator-scanner/', include('extrator_scanner.urls')),
     path('zeladoria/', include('zeladoria.urls')),
     path('chamados-ti/', include('chamados_ti.urls')),
+    path('roupeiro/', include('roupeiro.urls')),
     path('admin/', admin.site.urls),
 ]
 

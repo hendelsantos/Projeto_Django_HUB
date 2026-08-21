@@ -452,6 +452,11 @@ html[data-theme="dark"] .badge {
     gap: 12px;
 }
 
+.inline-form {
+    display: inline-flex;
+    margin: 0;
+}
+
 .toolbar-panel,
 .table-panel {
     padding: 20px;
@@ -470,6 +475,10 @@ html[data-theme="dark"] .badge {
 
 .filter-form-wide {
     grid-template-columns: 1.4fr 1fr 1fr 0.9fr auto auto;
+}
+
+.locker-filter-form {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr auto auto;
 }
 
 .metric-filter {
@@ -760,6 +769,7 @@ td a {
     .report-section-grid,
     .filter-form,
     .filter-form-wide,
+    .locker-filter-form,
     .metric-filter {
         grid-template-columns: 1fr;
     }

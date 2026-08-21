@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Roupeiro | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Gestao de Roupeiro</p>
+    <h1>Armarios e uniformes</h1>
+    <p>Controle armarios numerados, usuarios, turnos e tamanhos de camisa, calca e macacao.</p>
+</section>
+
+<section class="metric-grid" aria-label="Resumo do roupeiro">
+    <article class="metric-card">
+        <span>Total de armarios</span>
+        <strong>{{ total_armarios }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Ocupados</span>
+        <strong>{{ ocupados }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Livres</span>
+        <strong>{{ livres }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Manutencao</span>
+        <strong>{{ manutencao }}</strong>
+    </article>
+</section>
+
+<section class="action-grid">
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">+</span>
+            <span class="badge">Cadastro</span>
+        </div>
+        <div>
+            <h2>Novo armario</h2>
+            <p>Cadastre o numero sequencial do armario e, se ja estiver ocupado, vincule o usuario e os tamanhos.</p>
+        </div>
+        <a class="button" href="{% url 'roupeiro:criar' %}">Cadastrar armario</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">OK</span>
+            <span class="badge">Gestao</span>
+        </div>
+        <div>
+            <h2>Painel do roupeiro</h2>
+            <p>Filtre por usuario, status, turno ou tamanho para saber quem tem armario e quais estao disponiveis.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'roupeiro:painel' %}">Ver painel</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">XLS</span>
+            <span class="badge">Relatorio</span>
+        </div>
+        <div>
+            <h2>Exportar controle</h2>
+            <p>Gere uma planilha completa dos armarios, usuarios, turnos, tamanhos e observacoes.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'roupeiro:exportar_excel' %}">Exportar Excel</a>
+    </article>
+</section>
+{% endblock %}

@@ -25,7 +25,7 @@
         <p class="eyebrow">Resumo executivo</p>
         <h2>{{ total_geral }} itens registrados no periodo</h2>
         <p>
-            {{ concluidos }} concluidos, {{ pendentes }} pendentes e {{ sem_ticket }} pendentes sem ticket oficial.
+            {{ concluidos }} concluidos ou ocupados, {{ pendentes }} pendentes ou livres e {{ sem_ticket }} itens em atencao.
             Taxa de conclusao: {{ taxa_conclusao }}%.
         </p>
     </div>
@@ -37,9 +37,9 @@
 
 <section class="metric-grid" aria-label="Indicadores gerais">
     <article class="metric-card"><span>Total geral</span><strong>{{ total_geral }}</strong></article>
-    <article class="metric-card"><span>Concluidos</span><strong>{{ concluidos }}</strong></article>
-    <article class="metric-card"><span>Pendentes</span><strong>{{ pendentes }}</strong></article>
-    <article class="metric-card"><span>Sem ticket</span><strong>{{ sem_ticket }}</strong></article>
+    <article class="metric-card"><span>Concluidos/ocupados</span><strong>{{ concluidos }}</strong></article>
+    <article class="metric-card"><span>Pendentes/livres</span><strong>{{ pendentes }}</strong></article>
+    <article class="metric-card"><span>Itens em atencao</span><strong>{{ sem_ticket }}</strong></article>
 </section>
 
 <section class="table-panel report-sources-panel">
@@ -76,7 +76,7 @@
                 <div class="report-area-row">
                     <div>
                         <strong>{{ area.nome }}</strong>
-                        <span>{{ area.pendentes }} pendentes</span>
+                        <span>{{ area.pendentes }} {{ area.pendentes_rotulo }}</span>
                     </div>
                     <b>{{ area.total }}</b>
                 </div>

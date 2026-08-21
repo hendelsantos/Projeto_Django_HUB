@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Armario #{{ armario.numero }} | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="detail-header">
+    <div class="intro">
+        <p class="eyebrow">Armario #{{ armario.numero }}</p>
+        <h1>{{ armario.usuario|default:'Armario disponivel' }}</h1>
+        <p>Status atual: {{ armario.get_status_display }}.</p>
+    </div>
+    <div class="actions">
+        <a class="button" href="{% url 'roupeiro:editar' armario.pk %}">Editar armario</a>
+        {% if armario.usuario %}
+            <form method="post" action="{% url 'roupeiro:liberar' armario.pk %}" class="inline-form">
+                {% csrf_token %}
+                <button class="button button-secondary" type="submit">Liberar armario</button>
+            </form>
+        {% endif %}
+        <a class="button button-secondary" href="{% url 'roupeiro:painel' %}">Voltar ao painel</a>
+    </div>
+</section>
+
+<section class="detail-grid">
+    <article class="upload-panel">
+        <h2>Informacoes do armario</h2>
+        <dl class="detail-list">
+            <div><dt>Numero</dt><dd>#{{ armario.numero }}</dd></div>
+            <div><dt>Status</dt><dd>{{ armario.get_status_display }}</dd></div>
+            <div><dt>Usuario</dt><dd>{{ armario.usuario|default:'-' }}</dd></div>
+            <div><dt>Turno</dt><dd>{{ armario.get_turno_display|default:'-' }}</dd></div>
+            <div><dt>Criado em</dt><dd>{{ armario.criado_em|date:'d/m/Y H:i' }}</dd></div>
+            <div><dt>Atualizado em</dt><dd>{{ armario.atualizado_em|date:'d/m/Y H:i' }}</dd></div>
+        </dl>
+    </article>
+
+    <article class="upload-panel">
+        <h2>Uniforme</h2>
+        <dl class="detail-list">
+            <div><dt>Camisa</dt><dd>{{ armario.get_tamanho_camisa_display|default:'-' }}</dd></div>
+            <div><dt>Calca</dt><dd>{{ armario.get_tamanho_calca_display|default:'-' }}</dd></div>
+            <div><dt>Macacao</dt><dd>{{ armario.get_tamanho_macacao_display|default:'-' }}</dd></div>
+            <div><dt>Observacoes</dt><dd>{{ armario.observacoes|default:'-' }}</dd></div>
+        </dl>
+    </article>
+</section>
+{% endblock %}

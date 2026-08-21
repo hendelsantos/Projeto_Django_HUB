@@ -1,0 +1,57 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Paint Hub{% endblock %}</title>
+    <script>
+        const savedTheme = localStorage.getItem('paintHubTheme') || 'light';
+        document.documentElement.dataset.theme = savedTheme;
+    </script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/theme.js' %}" defer></script>
+</head>
+<body>
+    <div class="site-shell">
+        <header class="topbar">
+            <a class="brand" href="{% url 'hub:home' %}">
+                <span class="brand-mark">H</span>
+                <span>Paint Hub</span>
+            </a>
+            <div class="topbar-actions">
+                <nav aria-label="Navegacao principal">
+                    <a href="{% url 'hub:home' %}">Home</a>
+                    <a href="{% url 'extrator_scanner:index' %}">Extractor</a>
+                    <a href="{% url 'zeladoria:index' %}">Building Care</a>
+                </nav>
+
+                <div class="theme-switch" aria-label="Escolher tema">
+                    <button type="button" data-theme-option="light" title="Light mode" aria-label="Light mode">
+                        <span aria-hidden="true">☀</span>
+                    </button>
+                    <button type="button" data-theme-option="dark" title="Dark mode" aria-label="Dark mode">
+                        <span aria-hidden="true">☾</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="page">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p class="message message-{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="footer">
+            <p>Feito por Hendel Santos</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Building Care | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Building Care</p>
+    <h1>Zeladoria Predial</h1>
+    <p>Cadastre necessidades de melhoria no predio, acompanhe tickets oficiais e gere relatorios mensais em Excel.</p>
+</section>
+
+<section class="metric-grid" aria-label="Resumo dos chamados">
+    <article class="metric-card">
+        <span>Chamados abertos</span>
+        <strong>{{ total_abertos }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Criados neste mes</span>
+        <strong>{{ total_mes }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Aguardando ticket</span>
+        <strong>{{ aguardando_ticket }}</strong>
+    </article>
+</section>
+
+<section class="action-grid">
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">+</span>
+            <span class="badge">Equipe</span>
+        </div>
+        <div>
+            <h2>Cadastrar necessidade</h2>
+            <p>Use esta entrada para registrar foto, local, nome e descricao do que precisa ser melhorado.</p>
+        </div>
+        <a class="button" href="{% url 'zeladoria:criar' %}">Abrir cadastro</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">OK</span>
+            <span class="badge">Follow-up</span>
+        </div>
+        <div>
+            <h2>Painel de acompanhamento</h2>
+            <p>Atualize status, ticket oficial, observacoes e acompanhe tudo por mes.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'zeladoria:painel' %}">Ver painel</a>
+    </article>
+</section>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastrar necessidade | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Building Care</p>
+    <h1>Cadastrar necessidade</h1>
+    <p>Informe seu nome, o local e descreva a melhoria necessaria. A foto ajuda muito no acompanhamento.</p>
+</section>
+
+<section class="upload-panel">
+    <form method="post" enctype="multipart/form-data" class="app-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <label class="form-field">
+                <span>{{ field.label }}</span>
+                {{ field }}
+                {% if field.errors %}
+                    <small>{{ field.errors|striptags }}</small>
+                {% endif %}
+            </label>
+        {% endfor %}
+
+        <div class="actions">
+            <button class="button" type="submit">Cadastrar chamado</button>
+            <a class="button button-secondary" href="{% url 'zeladoria:index' %}">Voltar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

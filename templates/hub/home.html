@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Painel central</p>
+    <h1>Ferramentas simples para a pintura</h1>
+    <p>Escolha um app do Paint Hub para automatizar rotinas, organizar arquivos e transformar tarefas manuais em processos mais rapidos.</p>
+</section>
+
+<section class="tool-grid" aria-label="Ferramentas disponiveis">
+    {% for tool in tools %}
+        <article class="tool-card">
+            <div class="tool-card-header">
+                <span class="tool-icon">{{ tool.icon }}</span>
+                <span class="badge">{{ tool.status }}</span>
+            </div>
+            <div>
+                <h2>{{ tool.name }}</h2>
+                <p>{{ tool.description }}</p>
+            </div>
+            <a class="button" href="{% url tool.url_name %}">Acessar ferramenta</a>
+        </article>
+    {% endfor %}
+
+    <article class="tool-card tool-card-disabled">
+        <div class="tool-card-header">
+            <span class="tool-icon">+</span>
+            <span class="badge badge-muted">Em breve</span>
+        </div>
+        <div>
+            <h2>Proxima ferramenta</h2>
+            <p>Novos apps podem entrar aqui mantendo a mesma estrutura do hub.</p>
+        </div>
+        <span class="button button-disabled">Aguardando</span>
+    </article>
+</section>
+{% endblock %}

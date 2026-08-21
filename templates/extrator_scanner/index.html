@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Extrator de Scanner | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Extrator de scanner</p>
+    <h1>Gerar Excel a partir de PDF</h1>
+    <p>Suba o PDF do scanner e baixe uma planilha com o texto encontrado em cada pagina.</p>
+</section>
+
+<section class="upload-panel">
+    <div class="upload-summary">
+        <span class="tool-icon">PDF</span>
+        <div>
+            <h2>Enviar arquivo do scanner</h2>
+            <p>O arquivo sera processado e o Excel sera baixado automaticamente.</p>
+        </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="upload-form">
+        {% csrf_token %}
+        <label class="file-field">
+            <span>Arquivo PDF</span>
+            <input type="file" name="scanner_file" accept="application/pdf,.pdf" required>
+        </label>
+
+        <div class="actions">
+            <button class="button" type="submit">Subir scanner e gerar Excel</button>
+            <a class="button button-secondary" href="{% url 'hub:home' %}">Voltar ao hub</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

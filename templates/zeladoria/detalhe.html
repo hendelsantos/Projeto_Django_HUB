@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Chamado #{{ chamado.id }} | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="detail-header">
+    <div class="intro">
+        <p class="eyebrow">Chamado #{{ chamado.id }}</p>
+        <h1>{{ chamado.local }}</h1>
+        <p>{{ chamado.descricao }}</p>
+    </div>
+    <div class="actions">
+        <a class="button" href="{% url 'zeladoria:editar' chamado.pk %}">Atualizar follow-up</a>
+        <a class="button button-secondary" href="{% url 'zeladoria:painel' %}">Voltar ao painel</a>
+    </div>
+</section>
+
+<section class="detail-grid">
+    <article class="upload-panel">
+        <h2>Informacoes</h2>
+        <dl class="detail-list">
+            <div><dt>Solicitante</dt><dd>{{ chamado.solicitante }}</dd></div>
+            <div><dt>Status</dt><dd>{{ chamado.get_status_display }}</dd></div>
+            <div><dt>Ticket oficial</dt><dd>{{ chamado.ticket_oficial|default:'-' }}</dd></div>
+            <div><dt>Mes</dt><dd>{{ chamado.mes_referencia }}</dd></div>
+            <div><dt>Criado em</dt><dd>{{ chamado.criado_em|date:'d/m/Y H:i' }}</dd></div>
+            <div><dt>Observacoes</dt><dd>{{ chamado.observacoes|default:'-' }}</dd></div>
+        </dl>
+    </article>
+
+    <article class="upload-panel">
+        <h2>Foto</h2>
+        {% if chamado.foto %}
+            <img class="request-photo" src="{{ chamado.foto.url }}" alt="Foto do chamado {{ chamado.id }}">
+        {% else %}
+            <p class="empty-text">Nenhuma foto enviada.</p>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}

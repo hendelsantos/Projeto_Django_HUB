@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from .models import AccessLog
+
 
 class HubHomeTests(TestCase):
     def setUp(self):
@@ -54,5 +56,10 @@ class HubHomeTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'image/png')
+
+    def test_access_log_records_page_view(self):
+        self.client.get(reverse('hub:home'))
+
+        self.assertTrue(AccessLog.objects.filter(path='/').exists())
 
 # Create your tests here.

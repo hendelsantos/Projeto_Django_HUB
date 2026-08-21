@@ -1,0 +1,136 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+<style>
+    .access-metrics {
+        display: grid;
+        gap: 16px;
+        margin: 0 0 22px;
+    }
+
+    .access-metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+    }
+
+    .access-metric-card,
+    .access-panel {
+        padding: 16px;
+        border: 1px solid var(--hairline-color);
+        border-radius: 8px;
+        background: var(--body-bg);
+    }
+
+    .access-metric-card span {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--body-quiet-color);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .access-metric-card strong {
+        font-size: 28px;
+        line-height: 1;
+    }
+
+    .access-panel-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .access-panel h2 {
+        margin: 0 0 12px;
+        font-size: 16px;
+    }
+
+    .access-list {
+        display: grid;
+        gap: 9px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .access-list li {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 9px;
+        border-bottom: 1px solid var(--hairline-color);
+    }
+
+    .access-list small {
+        color: var(--body-quiet-color);
+    }
+
+    @media (max-width: 760px) {
+        .access-panel-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="access-metrics">
+    <div class="access-metric-grid">
+        <div class="access-metric-card">
+            <span>Total de acessos</span>
+            <strong>{{ access_metrics.total }}</strong>
+        </div>
+        <div class="access-metric-card">
+            <span>Acessos hoje</span>
+            <strong>{{ access_metrics.today }}</strong>
+        </div>
+        <div class="access-metric-card">
+            <span>Ultimos 7 dias</span>
+            <strong>{{ access_metrics.last_7_days }}</strong>
+        </div>
+        <div class="access-metric-card">
+            <span>Logados</span>
+            <strong>{{ access_metrics.logged_users }}</strong>
+        </div>
+        <div class="access-metric-card">
+            <span>Anonimos</span>
+            <strong>{{ access_metrics.anonymous }}</strong>
+        </div>
+    </div>
+
+    <div class="access-panel-grid">
+        <article class="access-panel">
+            <h2>Rotas mais acessadas</h2>
+            <ul class="access-list">
+                {% for item in access_metrics.top_paths %}
+                    <li>
+                        <span>{{ item.path }}</span>
+                        <strong>{{ item.total }}</strong>
+                    </li>
+                {% empty %}
+                    <li><span>Nenhum acesso registrado ainda.</span></li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="access-panel">
+            <h2>Acessos recentes</h2>
+            <ul class="access-list">
+                {% for acesso in access_metrics.recent_accesses %}
+                    <li>
+                        <span>
+                            {{ acesso.path }}<br>
+                            <small>{{ acesso.user|default:"Anonimo" }} - {{ acesso.created_at|date:"d/m/Y H:i" }}</small>
+                        </span>
+                        <strong>{{ acesso.status_code }}</strong>
+                    </li>
+                {% empty %}
+                    <li><span>Nenhum acesso registrado ainda.</span></li>
+                {% endfor %}
+            </ul>
+        </article>
+    </div>
+</section>
+
+{{ block.super }}
+{% endblock %}

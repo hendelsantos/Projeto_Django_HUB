@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Paint Hub{% endblock %}</title>
+    <title>{% block title %}Ferramentas digitais Paint Shop{% endblock %}</title>
     <script>
         const savedTheme = localStorage.getItem('paintHubTheme') || 'light';
         document.documentElement.dataset.theme = savedTheme;
@@ -17,7 +17,7 @@
         <header class="topbar">
             <a class="brand" href="{% url 'hub:home' %}">
                 <span class="brand-mark">H</span>
-                <span>Paint Hub</span>
+                <span>Ferramentas digitais Paint Shop</span>
             </a>
             <div class="topbar-actions">
                 <nav aria-label="Navegacao principal">

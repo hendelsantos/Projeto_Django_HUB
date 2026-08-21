@@ -97,7 +97,7 @@ def exportar_relatorio_geral(request):
     sheet.title = 'Relatorio Geral'
 
     sheet.merge_cells('A1:J1')
-    sheet['A1'] = f'Relatorio Geral Paint Hub - {mes}'
+    sheet['A1'] = f'Relatorio Geral Ferramentas digitais Paint Shop - {mes}'
     sheet['A1'].font = Font(bold=True, size=16, color='FFFFFF')
     sheet['A1'].fill = PatternFill('solid', fgColor='17212B')
     sheet['A1'].alignment = Alignment(horizontal='center')

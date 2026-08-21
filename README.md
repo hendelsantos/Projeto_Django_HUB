@@ -1,4 +1,4 @@
-# Paint Hub
+# Ferramentas digitais Paint Shop
 
 Projeto Django para reunir ferramentas internas simples do departamento de pintura em um painel central.
 

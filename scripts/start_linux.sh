@@ -20,7 +20,7 @@ echo "Aplicando migrations no SQLite..."
 .venv/bin/python manage.py migrate
 
 echo ""
-echo "Paint Hub iniciado."
+echo "Ferramentas digitais Paint Shop iniciado."
 echo "Nesta maquina: http://127.0.0.1:${PORT}/"
 echo "Na rede local, acesse pelo IP desta maquina na porta ${PORT}."
 echo "IPs encontrados:"

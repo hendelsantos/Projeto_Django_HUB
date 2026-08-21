@@ -19,7 +19,7 @@ echo Aplicando migrations no SQLite...
 ".venv\Scripts\python.exe" manage.py migrate
 
 echo.
-echo Paint Hub iniciado.
+echo Ferramentas digitais Paint Shop iniciado.
 echo Nesta maquina: http://127.0.0.1:%PAINT_HUB_PORT%/
 echo Na rede local, acesse pelo IP desta maquina na porta %PAINT_HUB_PORT%.
 echo Para descobrir o IP, veja o endereco IPv4 abaixo:

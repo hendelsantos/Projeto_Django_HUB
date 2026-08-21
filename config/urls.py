@@ -19,8 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
 
-admin.site.site_header = 'Paint Hub Admin'
-admin.site.site_title = 'Paint Hub Admin'
+admin.site.site_header = 'Ferramentas digitais Paint Shop Admin'
+admin.site.site_title = 'Ferramentas digitais Paint Shop Admin'
 admin.site.index_title = 'Painel de gerenciamento'
 
 urlpatterns = [

@@ -39,6 +39,16 @@ class RoupeiroViewsTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Armario.objects.filter(numero=10, usuario='Joao Santos', tamanho_calca_numero=42).exists())
 
+    def test_mapa_mostra_armario_clicavel(self):
+        armario = Armario.objects.create(numero=7, usuario='Ana Souza')
+
+        response = self.client.get(reverse('roupeiro:mapa'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Painel visual de armarios')
+        self.assertContains(response, reverse('roupeiro:detalhe', args=[armario.pk]))
+        self.assertContains(response, '<strong>7</strong>')
+
     def test_exportar_excel(self):
         Armario.objects.create(numero=2, usuario='Ana Souza')
 

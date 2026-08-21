@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Mapa de Armarios | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="detail-header">
+    <div class="intro">
+        <p class="eyebrow">Mapa do roupeiro</p>
+        <h1>Painel visual de armarios</h1>
+        <p>Clique no numero do armario para abrir os detalhes do usuario, turno, status e tamanhos cadastrados.</p>
+    </div>
+    <div class="actions">
+        <a class="button" href="{% url 'roupeiro:criar' %}">Novo armario</a>
+        <a class="button button-secondary" href="{% url 'roupeiro:painel' %}">Ver tabela</a>
+    </div>
+</section>
+
+<section class="metric-grid" aria-label="Resumo do mapa de armarios">
+    <article class="metric-card"><span>Total</span><strong>{{ total_armarios }}</strong></article>
+    <article class="metric-card"><span>Ocupados</span><strong>{{ ocupados }}</strong></article>
+    <article class="metric-card"><span>Livres</span><strong>{{ livres }}</strong></article>
+    <article class="metric-card"><span>Manutencao</span><strong>{{ manutencao }}</strong></article>
+</section>
+
+<section class="toolbar-panel">
+    <form method="get" class="filter-form locker-map-filter">
+        <label>
+            <span>Busca</span>
+            <input type="search" name="busca" value="{{ busca }}" placeholder="Numero, usuario ou observacao">
+        </label>
+        <label>
+            <span>Status</span>
+            <select name="status">
+                <option value="">Todos</option>
+                {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if value == status_atual %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <button class="button" type="submit">Filtrar</button>
+        <a class="button button-secondary" href="{% url 'roupeiro:mapa' %}">Limpar</a>
+    </form>
+</section>
+
+<section class="table-panel">
+    <div class="table-header">
+        <h2>Armarios cadastrados</h2>
+        <div class="locker-legend" aria-label="Legenda de status">
+            <span class="locker-legend-item locker-free">Livre</span>
+            <span class="locker-legend-item locker-occupied">Ocupado</span>
+            <span class="locker-legend-item locker-maintenance">Manutencao</span>
+            <span class="locker-legend-item locker-inactive">Inativo</span>
+        </div>
+    </div>
+
+    <div class="locker-grid" aria-label="Mapa clicavel de armarios">
+        {% for armario in armarios %}
+            <a class="locker-tile locker-status-{{ armario.status }}" href="{% url 'roupeiro:detalhe' armario.pk %}" title="Abrir detalhes do armario {{ armario.numero }}">
+                <strong>{{ armario.numero }}</strong>
+                <span>{{ armario.get_status_display }}</span>
+                <small>{{ armario.usuario|default:'Sem usuario' }}</small>
+            </a>
+        {% empty %}
+            <p class="empty-text">Nenhum armario encontrado para os filtros atuais.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

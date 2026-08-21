@@ -98,6 +98,43 @@ def painel(request):
     )
 
 
+def mapa(request):
+    status = request.GET.get('status', '')
+    busca = request.GET.get('busca', '').strip()
+
+    armarios = Armario.objects.all()
+
+    if status:
+        armarios = armarios.filter(status=status)
+
+    if busca:
+        numero_busca = int(busca) if busca.isdigit() else None
+        filtros_busca = Q(usuario__icontains=busca) | Q(observacoes__icontains=busca)
+        if numero_busca is not None:
+            filtros_busca |= Q(numero=numero_busca)
+        armarios = armarios.filter(filtros_busca)
+
+    total_armarios = Armario.objects.count()
+    ocupados = Armario.objects.filter(status=Armario.Status.OCUPADO).count()
+    livres = Armario.objects.filter(status=Armario.Status.LIVRE).count()
+    manutencao = Armario.objects.filter(status=Armario.Status.MANUTENCAO).count()
+
+    return render(
+        request,
+        'roupeiro/mapa.html',
+        {
+            'armarios': armarios,
+            'status_choices': Armario.Status.choices,
+            'status_atual': status,
+            'busca': busca,
+            'total_armarios': total_armarios,
+            'ocupados': ocupados,
+            'livres': livres,
+            'manutencao': manutencao,
+        },
+    )
+
+
 def detalhe(request, pk):
     armario = get_object_or_404(Armario, pk=pk)
     return render(request, 'roupeiro/detalhe.html', {'armario': armario})

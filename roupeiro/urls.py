@@ -7,6 +7,7 @@ app_name = 'roupeiro'
 urlpatterns = [
     path('', views.index, name='index'),
     path('novo/', views.criar, name='criar'),
+    path('mapa/', views.mapa, name='mapa'),
     path('painel/', views.painel, name='painel'),
     path('exportar/', views.exportar_excel, name='exportar_excel'),
     path('<int:pk>/', views.detalhe, name='detalhe'),

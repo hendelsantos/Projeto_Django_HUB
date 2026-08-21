@@ -50,7 +50,10 @@
 <section class="table-panel">
     <div class="table-header">
         <h2>Armarios cadastrados</h2>
-        <a class="button button-secondary" href="{% url 'roupeiro:criar' %}">Novo armario</a>
+        <div class="actions">
+            <a class="button button-secondary" href="{% url 'roupeiro:mapa' %}">Ver mapa</a>
+            <a class="button button-secondary" href="{% url 'roupeiro:criar' %}">Novo armario</a>
+        </div>
     </div>
 
     <div class="responsive-table">

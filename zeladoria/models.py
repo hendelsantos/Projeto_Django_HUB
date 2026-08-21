@@ -11,6 +11,7 @@ class ChamadoZeladoria(models.Model):
         CONCLUIDO = 'concluido', 'Concluido'
         CANCELADO = 'cancelado', 'Cancelado'
 
+    titulo = models.CharField('titulo do chamado', max_length=140, default='Chamado de zeladoria')
     solicitante = models.CharField('nome do solicitante', max_length=120)
     local = models.CharField('local', max_length=160)
     descricao = models.TextField('descricao da necessidade')
@@ -27,7 +28,7 @@ class ChamadoZeladoria(models.Model):
         verbose_name_plural = 'chamados de zeladoria'
 
     def __str__(self):
-        return f'{self.local} - {self.solicitante}'
+        return f'{self.titulo} - {self.local}'
 
     @property
     def mes_referencia(self):

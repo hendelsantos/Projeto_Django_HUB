@@ -63,6 +63,7 @@ def painel(request):
     if busca:
         chamados = chamados.filter(
             Q(solicitante__icontains=busca)
+            | Q(titulo__icontains=busca)
             | Q(local__icontains=busca)
             | Q(descricao__icontains=busca)
             | Q(ticket_oficial__icontains=busca)
@@ -118,7 +119,7 @@ def exportar_excel(request):
     sheet.title = 'Chamados'
 
     title = 'Relatorio de Zeladoria Predial'
-    sheet.merge_cells('A1:J1')
+    sheet.merge_cells('A1:K1')
     sheet['A1'] = title
     sheet['A1'].font = Font(bold=True, size=16, color='FFFFFF')
     sheet['A1'].fill = PatternFill('solid', fgColor='1967D2')
@@ -126,6 +127,7 @@ def exportar_excel(request):
 
     headers = [
         'ID',
+        'Titulo',
         'Mes',
         'Data',
         'Solicitante',
@@ -148,6 +150,7 @@ def exportar_excel(request):
         sheet.append(
             [
                 chamado.id,
+                chamado.titulo,
                 chamado.mes_referencia,
                 timezone.localtime(chamado.criado_em).strftime('%d/%m/%Y %H:%M'),
                 chamado.solicitante,
@@ -164,7 +167,7 @@ def exportar_excel(request):
         for cell in row:
             cell.alignment = Alignment(vertical='top', wrap_text=True)
 
-    widths = [8, 12, 18, 24, 28, 45, 18, 18, 38, 42]
+    widths = [8, 28, 12, 18, 24, 28, 45, 18, 18, 38, 42]
     for index, width in enumerate(widths, start=1):
         sheet.column_dimensions[get_column_letter(index)].width = width
 

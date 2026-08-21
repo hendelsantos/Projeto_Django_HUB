@@ -6,7 +6,7 @@
 <section class="detail-header">
     <div class="intro">
         <p class="eyebrow">Chamado #{{ chamado.id }}</p>
-        <h1>{{ chamado.local }}</h1>
+        <h1>{{ chamado.titulo }}</h1>
         <p>{{ chamado.descricao }}</p>
     </div>
     <div class="actions">
@@ -20,6 +20,7 @@
         <h2>Informacoes</h2>
         <dl class="detail-list">
             <div><dt>Solicitante</dt><dd>{{ chamado.solicitante }}</dd></div>
+            <div><dt>Local</dt><dd>{{ chamado.local }}</dd></div>
             <div><dt>Status</dt><dd>{{ chamado.get_status_display }}</dd></div>
             <div><dt>Ticket oficial</dt><dd>{{ chamado.ticket_oficial|default:'-' }}</dd></div>
             <div><dt>Mes</dt><dd>{{ chamado.mes_referencia }}</dd></div>

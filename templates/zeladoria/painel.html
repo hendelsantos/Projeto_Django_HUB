@@ -13,7 +13,7 @@
     <form method="get" class="filter-form">
         <label>
             <span>Busca</span>
-            <input type="search" name="busca" value="{{ busca }}" placeholder="Nome, local, descricao ou ticket">
+            <input type="search" name="busca" value="{{ busca }}" placeholder="Titulo, nome, local, descricao ou ticket">
         </label>
         <label>
             <span>Status</span>
@@ -44,6 +44,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Titulo</th>
                     <th>Mes</th>
                     <th>Solicitante</th>
                     <th>Local</th>
@@ -56,6 +57,7 @@
                 {% for chamado in chamados %}
                     <tr>
                         <td>#{{ chamado.id }}</td>
+                        <td>{{ chamado.titulo }}</td>
                         <td>{{ chamado.mes_referencia }}</td>
                         <td>{{ chamado.solicitante }}</td>
                         <td>{{ chamado.local }}</td>
@@ -68,7 +70,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="7">Nenhum chamado encontrado.</td>
+                        <td colspan="8">Nenhum chamado encontrado.</td>
                     </tr>
                 {% endfor %}
             </tbody>

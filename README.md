@@ -11,15 +11,50 @@ Projeto Django para reunir ferramentas internas simples do departamento de pintu
 
 ## Como rodar
 
+### Linux
+
 ```bash
-source .venv/bin/activate
-python manage.py runserver 127.0.0.1:8010
+chmod +x scripts/start_linux.sh
+./scripts/start_linux.sh
 ```
 
-Depois acesse:
+### Windows
+
+```bat
+scripts\start_windows.bat
+```
+
+Depois acesse nesta maquina:
 
 ```text
 http://127.0.0.1:8010/
+```
+
+Para acessar pela rede, use o IP da maquina que esta rodando o sistema:
+
+```text
+http://IP-DA-MAQUINA:8010/
+```
+
+Exemplo:
+
+```text
+http://192.168.0.25:8010/
+```
+
+Se quiser trocar a porta:
+
+Linux:
+
+```bash
+PAINT_HUB_PORT=8020 ./scripts/start_linux.sh
+```
+
+Windows:
+
+```bat
+set PAINT_HUB_PORT=8020
+scripts\start_windows.bat
 ```
 
 ## Estrutura atual

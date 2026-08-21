@@ -18,6 +18,7 @@ class ZeladoriaTests(TestCase):
         response = self.client.post(
             reverse('zeladoria:criar'),
             {
+                'titulo': 'Iluminacao fraca',
                 'solicitante': 'Hendel Santos',
                 'local': 'Predio 1',
                 'descricao': 'Melhorar iluminacao do corredor.',
@@ -30,6 +31,7 @@ class ZeladoriaTests(TestCase):
 
     def test_follow_up_updates_ticket_and_status(self):
         chamado = ChamadoZeladoria.objects.create(
+            titulo='Ajuste na cabine',
             solicitante='Equipe Pintura',
             local='Cabine',
             descricao='Ajuste na area de limpeza.',
@@ -51,6 +53,7 @@ class ZeladoriaTests(TestCase):
 
     def test_export_excel_contains_chamado(self):
         ChamadoZeladoria.objects.create(
+            titulo='Parede danificada',
             solicitante='Hendel Santos',
             local='Predio 2',
             descricao='Pintura de parede danificada.',
@@ -68,7 +71,8 @@ class ZeladoriaTests(TestCase):
         workbook = load_workbook(BytesIO(response.content))
         sheet = workbook.active
         self.assertEqual(sheet['A1'].value, 'Relatorio de Zeladoria Predial')
-        self.assertEqual(sheet['D3'].value, 'Hendel Santos')
-        self.assertEqual(sheet['H3'].value, 'REQ-999')
+        self.assertEqual(sheet['B3'].value, 'Parede danificada')
+        self.assertEqual(sheet['E3'].value, 'Hendel Santos')
+        self.assertEqual(sheet['I3'].value, 'REQ-999')
 
 # Create your tests here.

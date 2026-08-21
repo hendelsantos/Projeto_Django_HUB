@@ -74,9 +74,18 @@
                         <td><span class="status-pill">{{ armario.get_status_display }}</span></td>
                         <td>{{ armario.usuario|default:'-' }}</td>
                         <td>{{ armario.get_turno_display|default:'-' }}</td>
-                        <td>{{ armario.get_tamanho_camisa_display|default:'-' }}</td>
-                        <td>{{ armario.get_tamanho_calca_display|default:'-' }}</td>
-                        <td>{{ armario.get_tamanho_macacao_display|default:'-' }}</td>
+                        <td>
+                            {{ armario.get_tamanho_camisa_display|default:'-' }}
+                            {% if armario.tamanho_camisa_numero %}/ {{ armario.tamanho_camisa_numero }}{% endif %}
+                        </td>
+                        <td>
+                            {{ armario.get_tamanho_calca_display|default:'-' }}
+                            {% if armario.tamanho_calca_numero %}/ {{ armario.tamanho_calca_numero }}{% endif %}
+                        </td>
+                        <td>
+                            {{ armario.get_tamanho_macacao_display|default:'-' }}
+                            {% if armario.tamanho_macacao_numero %}/ {{ armario.tamanho_macacao_numero }}{% endif %}
+                        </td>
                         <td>
                             <a href="{% url 'roupeiro:detalhe' armario.pk %}">Ver</a>
                             <a href="{% url 'roupeiro:editar' armario.pk %}">Editar</a>

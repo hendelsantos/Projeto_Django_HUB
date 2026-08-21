@@ -108,6 +108,12 @@ def get_roupeiro_source(_ano, _numero_mes):
     armarios = Armario.objects.all()
     ocupados = armarios.filter(status=Armario.Status.OCUPADO).count()
     total = armarios.count()
+
+    def format_size(label, numeric):
+        if label and numeric:
+            return f'{label} / {numeric}'
+        return label or numeric or '-'
+
     return {
         'nome': 'Gestao de Roupeiro',
         'slug': 'roupeiro',
@@ -131,9 +137,9 @@ def get_roupeiro_source(_ano, _numero_mes):
                 'ticket': '',
                 'data': armario.atualizado_em,
                 'detalhe': (
-                    f"Camisa: {armario.get_tamanho_camisa_display() if armario.tamanho_camisa else '-'}; "
-                    f"Calca: {armario.get_tamanho_calca_display() if armario.tamanho_calca else '-'}; "
-                    f"Macacao: {armario.get_tamanho_macacao_display() if armario.tamanho_macacao else '-'}"
+                    f"Camisa: {format_size(armario.get_tamanho_camisa_display() if armario.tamanho_camisa else '', armario.tamanho_camisa_numero)}; "
+                    f"Calca: {format_size(armario.get_tamanho_calca_display() if armario.tamanho_calca else '', armario.tamanho_calca_numero)}; "
+                    f"Macacao: {format_size(armario.get_tamanho_macacao_display() if armario.tamanho_macacao else '', armario.tamanho_macacao_numero)}"
                 ),
                 'follow_up': armario.observacoes,
             }

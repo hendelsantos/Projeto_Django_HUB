@@ -37,9 +37,27 @@
     <article class="upload-panel">
         <h2>Uniforme</h2>
         <dl class="detail-list">
-            <div><dt>Camisa</dt><dd>{{ armario.get_tamanho_camisa_display|default:'-' }}</dd></div>
-            <div><dt>Calca</dt><dd>{{ armario.get_tamanho_calca_display|default:'-' }}</dd></div>
-            <div><dt>Macacao</dt><dd>{{ armario.get_tamanho_macacao_display|default:'-' }}</dd></div>
+            <div>
+                <dt>Camisa</dt>
+                <dd>
+                    {{ armario.get_tamanho_camisa_display|default:'-' }}
+                    {% if armario.tamanho_camisa_numero %}/ {{ armario.tamanho_camisa_numero }}{% endif %}
+                </dd>
+            </div>
+            <div>
+                <dt>Calca</dt>
+                <dd>
+                    {{ armario.get_tamanho_calca_display|default:'-' }}
+                    {% if armario.tamanho_calca_numero %}/ {{ armario.tamanho_calca_numero }}{% endif %}
+                </dd>
+            </div>
+            <div>
+                <dt>Macacao</dt>
+                <dd>
+                    {{ armario.get_tamanho_macacao_display|default:'-' }}
+                    {% if armario.tamanho_macacao_numero %}/ {{ armario.tamanho_macacao_numero }}{% endif %}
+                </dd>
+            </div>
             <div><dt>Observacoes</dt><dd>{{ armario.observacoes|default:'-' }}</dd></div>
         </dl>
     </article>

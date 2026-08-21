@@ -26,15 +26,18 @@ class RoupeiroViewsTests(TestCase):
                 'usuario': 'Joao Santos',
                 'turno': Armario.Turno.PRIMEIRO,
                 'tamanho_camisa': Armario.TamanhoRoupa.M,
+                'tamanho_camisa_numero': 40,
                 'tamanho_calca': Armario.TamanhoRoupa.G,
+                'tamanho_calca_numero': 42,
                 'tamanho_macacao': Armario.TamanhoRoupa.G,
+                'tamanho_macacao_numero': 44,
                 'status': Armario.Status.LIVRE,
                 'observacoes': '',
             },
         )
 
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(Armario.objects.filter(numero=10, usuario='Joao Santos').exists())
+        self.assertTrue(Armario.objects.filter(numero=10, usuario='Joao Santos', tamanho_calca_numero=42).exists())
 
     def test_exportar_excel(self):
         Armario.objects.create(numero=2, usuario='Ana Souza')
@@ -53,6 +56,7 @@ class RoupeiroViewsTests(TestCase):
             usuario='Carlos Lima',
             turno=Armario.Turno.SEGUNDO,
             tamanho_camisa=Armario.TamanhoRoupa.G,
+            tamanho_camisa_numero=42,
         )
 
         response = self.client.post(reverse('roupeiro:liberar', args=[armario.pk]))
@@ -61,5 +65,6 @@ class RoupeiroViewsTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(armario.status, Armario.Status.LIVRE)
         self.assertEqual(armario.usuario, '')
+        self.assertIsNone(armario.tamanho_camisa_numero)
 
 # Create your tests here.

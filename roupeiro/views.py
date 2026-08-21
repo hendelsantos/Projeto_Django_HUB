@@ -70,7 +70,12 @@ def painel(request):
         numero_busca = int(busca) if busca.isdigit() else None
         filtros_busca = Q(usuario__icontains=busca) | Q(observacoes__icontains=busca)
         if numero_busca is not None:
-            filtros_busca |= Q(numero=numero_busca)
+            filtros_busca |= (
+                Q(numero=numero_busca)
+                | Q(tamanho_camisa_numero=numero_busca)
+                | Q(tamanho_calca_numero=numero_busca)
+                | Q(tamanho_macacao_numero=numero_busca)
+            )
 
         armarios = armarios.filter(filtros_busca)
 
@@ -122,8 +127,11 @@ def liberar(request, pk):
     armario.usuario = ''
     armario.turno = ''
     armario.tamanho_camisa = ''
+    armario.tamanho_camisa_numero = None
     armario.tamanho_calca = ''
+    armario.tamanho_calca_numero = None
     armario.tamanho_macacao = ''
+    armario.tamanho_macacao_numero = None
     armario.status = Armario.Status.LIVRE
     armario.observacoes = f'{armario.observacoes}\nArmario liberado em {timezone.localtime().strftime("%d/%m/%Y %H:%M")}.'.strip()
     armario.save()
@@ -137,7 +145,7 @@ def exportar_excel(request):
     sheet = workbook.active
     sheet.title = 'Armarios'
 
-    sheet.merge_cells('A1:J1')
+    sheet.merge_cells('A1:M1')
     sheet['A1'] = 'Relatorio de Armarios do Roupeiro'
     sheet['A1'].font = Font(bold=True, size=16, color='FFFFFF')
     sheet['A1'].fill = PatternFill('solid', fgColor='1967D2')
@@ -149,8 +157,11 @@ def exportar_excel(request):
         'Usuario',
         'Turno',
         'Camisa',
+        'Camisa numero',
         'Calca',
+        'Calca numero',
         'Macacao',
+        'Macacao numero',
         'Observacoes',
         'Criado em',
         'Atualizado em',
@@ -171,8 +182,11 @@ def exportar_excel(request):
                 armario.usuario,
                 armario.get_turno_display() if armario.turno else '',
                 armario.get_tamanho_camisa_display() if armario.tamanho_camisa else '',
+                armario.tamanho_camisa_numero or '',
                 armario.get_tamanho_calca_display() if armario.tamanho_calca else '',
+                armario.tamanho_calca_numero or '',
                 armario.get_tamanho_macacao_display() if armario.tamanho_macacao else '',
+                armario.tamanho_macacao_numero or '',
                 armario.observacoes,
                 timezone.localtime(armario.criado_em).strftime('%d/%m/%Y %H:%M'),
                 timezone.localtime(armario.atualizado_em).strftime('%d/%m/%Y %H:%M'),
@@ -183,7 +197,7 @@ def exportar_excel(request):
         for cell in row:
             cell.alignment = Alignment(vertical='top', wrap_text=True)
 
-    widths = [10, 16, 28, 18, 12, 12, 12, 42, 18, 18]
+    widths = [10, 16, 28, 18, 12, 15, 12, 14, 12, 16, 42, 18, 18]
     for index, width in enumerate(widths, start=1):
         sheet.column_dimensions[get_column_letter(index)].width = width
 

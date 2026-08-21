@@ -16,6 +16,7 @@ class HubHomeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'PhotoCloud')
         self.assertContains(response, 'https://photo-cloud-1.onrender.com/')
+        self.assertContains(response, '10 minutos')
 
     def test_photocloud_qrcode_loads(self):
         response = self.client.get(reverse('hub:photocloud_qrcode'))

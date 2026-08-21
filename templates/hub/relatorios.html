@@ -42,6 +42,30 @@
     <article class="metric-card"><span>Sem ticket</span><strong>{{ sem_ticket }}</strong></article>
 </section>
 
+<section class="table-panel report-sources-panel">
+    <div class="table-header">
+        <h2>Fontes de relatorio</h2>
+    </div>
+    <div class="report-source-list">
+        {% for fonte in fontes_relatorio %}
+            <div class="report-source-row">
+                <div>
+                    <strong>{{ fonte.nome }}</strong>
+                    <span>{{ fonte.tipo }}</span>
+                    {% if fonte.observacao %}
+                        <p>{{ fonte.observacao }}</p>
+                    {% endif %}
+                </div>
+                {% if fonte.tem_dados_consolidados %}
+                    <b>{{ fonte.total }}</b>
+                {% else %}
+                    <em>Sob demanda</em>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
 <section class="report-section-grid">
     <article class="table-panel">
         <div class="table-header">

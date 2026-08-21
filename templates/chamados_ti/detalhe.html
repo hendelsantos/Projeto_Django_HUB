@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Chamado TI #{{ chamado.id }} | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="detail-header">
+    <div class="intro">
+        <p class="eyebrow">Chamado TI #{{ chamado.id }}</p>
+        <h1>{{ chamado.titulo }}</h1>
+        <p>{{ chamado.descricao }}</p>
+    </div>
+    <div class="actions">
+        <a class="button" href="{% url 'chamados_ti:editar' chamado.pk %}">Atualizar follow-up</a>
+        <a class="button button-secondary" href="{% url 'chamados_ti:painel' %}">Voltar ao painel</a>
+    </div>
+</section>
+
+<section class="detail-grid">
+    <article class="upload-panel">
+        <h2>Informacoes</h2>
+        <dl class="detail-list">
+            <div><dt>Solicitante</dt><dd>{{ chamado.solicitante }}</dd></div>
+            <div><dt>Setor</dt><dd>{{ chamado.setor|default:'-' }}</dd></div>
+            <div><dt>Categoria</dt><dd>{{ chamado.get_categoria_display }}</dd></div>
+            <div><dt>Prioridade</dt><dd>{{ chamado.get_prioridade_display }}</dd></div>
+            <div><dt>Status</dt><dd>{{ chamado.get_status_display }}</dd></div>
+            <div><dt>Ticket oficial</dt><dd>{{ chamado.ticket_oficial|default:'-' }}</dd></div>
+            <div><dt>Mes</dt><dd>{{ chamado.mes_referencia }}</dd></div>
+            <div><dt>Criado em</dt><dd>{{ chamado.criado_em|date:'d/m/Y H:i' }}</dd></div>
+            <div><dt>Concluido em</dt><dd>{{ chamado.concluido_em|date:'d/m/Y H:i'|default:'-' }}</dd></div>
+        </dl>
+    </article>
+
+    <article class="upload-panel">
+        <h2>Solucao / Follow-up</h2>
+        <p class="empty-text">{{ chamado.solucao|default:'Nenhum follow-up registrado.' }}</p>
+    </article>
+</section>
+{% endblock %}

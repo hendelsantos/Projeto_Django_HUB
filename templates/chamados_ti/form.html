@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Novo chamado de TI | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">IT Calls</p>
+    <h1>Novo chamado de TI</h1>
+    <p>Registre a demanda informada pela equipe para acompanhar atendimento, status e metricas no fim do mes.</p>
+</section>
+
+<section class="upload-panel">
+    <form method="post" class="app-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <label class="form-field">
+                <span>{{ field.label }}</span>
+                {{ field }}
+                {% if field.errors %}
+                    <small>{{ field.errors|striptags }}</small>
+                {% endif %}
+            </label>
+        {% endfor %}
+
+        <div class="actions">
+            <button class="button" type="submit">Cadastrar chamado</button>
+            <a class="button button-secondary" href="{% url 'chamados_ti:index' %}">Voltar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

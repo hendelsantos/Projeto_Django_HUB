@@ -286,10 +286,16 @@ h1 {
 }
 
 .tool-card p {
-    min-height: 70px;
-    margin: 0 0 24px;
+    margin: 0 0 12px;
     color: var(--muted);
     line-height: 1.5;
+}
+
+.tool-detail {
+    min-height: 72px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
 }
 
 .badge {
@@ -461,6 +467,15 @@ html[data-theme="dark"] .badge {
     gap: 12px;
 }
 
+.filter-form-wide {
+    grid-template-columns: 1.4fr 1fr 1fr 0.9fr auto auto;
+}
+
+.metric-filter {
+    grid-template-columns: minmax(180px, 260px) auto auto;
+    justify-content: start;
+}
+
 .table-header,
 .detail-header {
     display: flex;
@@ -613,7 +628,9 @@ td a {
     }
 
     .detail-grid,
-    .filter-form {
+    .filter-form,
+    .filter-form-wide,
+    .metric-filter {
         grid-template-columns: 1fr;
     }
 

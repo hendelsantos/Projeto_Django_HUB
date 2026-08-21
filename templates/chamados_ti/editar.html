@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Follow-up TI #{{ chamado.id }} | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Follow-up de TI</p>
+    <h1>Atualizar chamado #{{ chamado.id }}</h1>
+    <p>{{ chamado.titulo }} - solicitado por {{ chamado.solicitante }}.</p>
+</section>
+
+<section class="upload-panel">
+    <form method="post" class="app-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <label class="form-field">
+                <span>{{ field.label }}</span>
+                {{ field }}
+                {% if field.errors %}
+                    <small>{{ field.errors|striptags }}</small>
+                {% endif %}
+            </label>
+        {% endfor %}
+
+        <div class="actions">
+            <button class="button" type="submit">Salvar follow-up</button>
+            <a class="button button-secondary" href="{% url 'chamados_ti:detalhe' chamado.pk %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

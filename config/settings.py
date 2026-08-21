@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'hub',
     'extrator_scanner',
     'zeladoria',
+    'chamados_ti',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

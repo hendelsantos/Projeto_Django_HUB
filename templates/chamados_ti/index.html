@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}IT Calls | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">IT Calls</p>
+    <h1>Chamados de TI e Equipamentos</h1>
+    <p>Este app organiza chamados de TI, como abertura de conta, acesso a sistemas, verificacao de equipamentos e acompanhamento das demandas atendidas no mes.</p>
+</section>
+
+<section class="metric-grid" aria-label="Resumo de TI">
+    <article class="metric-card">
+        <span>Chamados no mes</span>
+        <strong>{{ total_mes }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Atendidos no mes</span>
+        <strong>{{ atendidos_mes }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Pendentes</span>
+        <strong>{{ pendentes }}</strong>
+    </article>
+</section>
+
+<section class="action-grid">
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">+</span>
+            <span class="badge">Equipe</span>
+        </div>
+        <div>
+            <h2>Novo chamado</h2>
+            <p>Cadastre a necessidade informada pelo membro da equipe, com categoria, prioridade e descricao.</p>
+        </div>
+        <a class="button" href="{% url 'chamados_ti:criar' %}">Cadastrar chamado</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">OK</span>
+            <span class="badge">Gestao</span>
+        </div>
+        <div>
+            <h2>Painel de atendimento</h2>
+            <p>Acompanhe status, registre ticket oficial e documente o follow-up do atendimento.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'chamados_ti:painel' %}">Ver painel</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">%</span>
+            <span class="badge">Metricas</span>
+        </div>
+        <div>
+            <h2>Metricas mensais</h2>
+            <p>Veja quantos chamados foram abertos, atendidos, pendentes e separados por categoria.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'chamados_ti:metricas' %}">Ver metricas</a>
+    </article>
+</section>
+{% endblock %}

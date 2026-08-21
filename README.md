@@ -62,6 +62,7 @@ scripts\start_windows.bat
 - `hub`: pagina central com os botoes das ferramentas.
 - `extrator_scanner`: upload de PDF e geracao inicial de Excel.
 - `zeladoria`: cadastro e acompanhamento de necessidades de zeladoria predial.
+- `chamados_ti`: gestao de chamados de TI, contas, sistemas e equipamentos.
 - `templates`: paginas HTML compartilhadas e dos apps.
 - `static/css/styles.css`: estilo visual simples do projeto.
 

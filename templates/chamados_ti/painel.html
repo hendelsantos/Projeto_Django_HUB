@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Painel de TI | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Gestao de TI</p>
+    <h1>Painel de Chamados</h1>
+    <p>Filtre demandas, atualize status e registre tickets oficiais ou solucoes aplicadas.</p>
+</section>
+
+<section class="toolbar-panel">
+    <form method="get" class="filter-form filter-form-wide">
+        <label>
+            <span>Busca</span>
+            <input type="search" name="busca" value="{{ busca }}" placeholder="Titulo, nome, setor, descricao ou ticket">
+        </label>
+        <label>
+            <span>Status</span>
+            <select name="status">
+                <option value="">Todos</option>
+                {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if value == status_atual %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Categoria</span>
+            <select name="categoria">
+                <option value="">Todas</option>
+                {% for value, label in categoria_choices %}
+                    <option value="{{ value }}" {% if value == categoria_atual %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Mes</span>
+            <input type="month" name="mes" value="{{ mes }}">
+        </label>
+        <button class="button" type="submit">Filtrar</button>
+        <a class="button button-secondary" href="{% url 'chamados_ti:exportar_excel' %}">Exportar Excel</a>
+    </form>
+</section>
+
+<section class="table-panel">
+    <div class="table-header">
+        <h2>Chamados cadastrados</h2>
+        <a class="button button-secondary" href="{% url 'chamados_ti:criar' %}">Novo chamado</a>
+    </div>
+
+    <div class="responsive-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mes</th>
+                    <th>Titulo</th>
+                    <th>Solicitante</th>
+                    <th>Categoria</th>
+                    <th>Prioridade</th>
+                    <th>Status</th>
+                    <th>Ticket</th>
+                    <th>Acao</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for chamado in chamados %}
+                    <tr>
+                        <td>#{{ chamado.id }}</td>
+                        <td>{{ chamado.mes_referencia }}</td>
+                        <td>{{ chamado.titulo }}</td>
+                        <td>{{ chamado.solicitante }}</td>
+                        <td>{{ chamado.get_categoria_display }}</td>
+                        <td>{{ chamado.get_prioridade_display }}</td>
+                        <td><span class="status-pill">{{ chamado.get_status_display }}</span></td>
+                        <td>{{ chamado.ticket_oficial|default:'-' }}</td>
+                        <td>
+                            <a href="{% url 'chamados_ti:detalhe' chamado.pk %}">Ver</a>
+                            <a href="{% url 'chamados_ti:editar' chamado.pk %}">Editar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9">Nenhum chamado encontrado.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

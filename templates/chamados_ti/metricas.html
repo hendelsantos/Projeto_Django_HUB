@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Metricas de TI | Paint Hub{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Metricas mensais</p>
+    <h1>Resumo dos chamados de TI</h1>
+    <p>Use o filtro de mes para acompanhar volume, atendimentos concluidos e pendencias.</p>
+</section>
+
+<section class="toolbar-panel">
+    <form method="get" class="filter-form metric-filter">
+        <label>
+            <span>Mes</span>
+            <input type="month" name="mes" value="{{ mes }}">
+        </label>
+        <button class="button" type="submit">Atualizar</button>
+        <a class="button button-secondary" href="{% url 'chamados_ti:exportar_excel' %}">Exportar Excel</a>
+    </form>
+</section>
+
+<section class="metric-grid" aria-label="Metricas do mes">
+    <article class="metric-card"><span>Total aberto</span><strong>{{ total }}</strong></article>
+    <article class="metric-card"><span>Atendidos</span><strong>{{ atendidos }}</strong></article>
+    <article class="metric-card"><span>Pendentes</span><strong>{{ pendentes }}</strong></article>
+    <article class="metric-card"><span>Cancelados</span><strong>{{ cancelados }}</strong></article>
+</section>
+
+<section class="detail-grid">
+    <article class="table-panel">
+        <div class="table-header">
+            <h2>Por categoria</h2>
+        </div>
+        <div class="responsive-table">
+            <table>
+                <thead><tr><th>Categoria</th><th>Total</th></tr></thead>
+                <tbody>
+                    {% for item in por_categoria %}
+                        <tr><td>{{ item.categoria }}</td><td>{{ item.total }}</td></tr>
+                    {% empty %}
+                        <tr><td colspan="2">Sem dados neste mes.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <article class="table-panel">
+        <div class="table-header">
+            <h2>Por status</h2>
+        </div>
+        <div class="responsive-table">
+            <table>
+                <thead><tr><th>Status</th><th>Total</th></tr></thead>
+                <tbody>
+                    {% for item in por_status %}
+                        <tr><td>{{ item.status }}</td><td>{{ item.total }}</td></tr>
+                    {% empty %}
+                        <tr><td colspan="2">Sem dados neste mes.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+{% endblock %}

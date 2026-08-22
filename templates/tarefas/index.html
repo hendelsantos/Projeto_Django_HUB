@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Tarefas | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Follow-up</p>
+    <h1>Tarefas e lembretes pendentes</h1>
+    <p>Cadastre pendencias importantes e mantenha o acompanhamento visivel no HUB ate que a baixa seja registrada.</p>
+</section>
+
+<section class="metric-grid" aria-label="Resumo de tarefas">
+    <article class="metric-card">
+        <span>Abertas</span>
+        <strong>{{ abertas }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Vencidas</span>
+        <strong>{{ vencidas }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Concluidas no mes</span>
+        <strong>{{ concluidas_mes }}</strong>
+    </article>
+</section>
+
+<section class="action-grid">
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">+</span>
+            <span class="badge">Rapido</span>
+        </div>
+        <div>
+            <h2>Nova tarefa</h2>
+            <p>Registre uma pendencia com responsavel, prazo, prioridade e origem para nao perder o follow-up.</p>
+        </div>
+        <a class="button" href="{% url 'tarefas:criar' %}">Cadastrar tarefa</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">OK</span>
+            <span class="badge">Gestao</span>
+        </div>
+        <div>
+            <h2>Painel de follow-up</h2>
+            <p>Acompanhe abertas, vencidas, em andamento, concluidas e registre a baixa de cada item.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'tarefas:painel' %}">Ver painel</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">XLS</span>
+            <span class="badge">Excel</span>
+        </div>
+        <div>
+            <h2>Exportar relatorio</h2>
+            <p>Gere a lista completa de follow-ups para conferencia, reuniao ou arquivo mensal.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'tarefas:exportar_excel' %}">Exportar Excel</a>
+    </article>
+</section>
+{% endblock %}

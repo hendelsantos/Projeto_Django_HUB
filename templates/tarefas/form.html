@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }} | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Follow-up</p>
+    <h1>{{ titulo }}</h1>
+    <p>Registre a pendencia, o responsavel e o prazo. Enquanto nao houver baixa, ela continua aparecendo como lembrete flutuante.</p>
+</section>
+
+<section class="upload-panel">
+    <form method="post" class="app-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <label class="form-field">
+                <span>{{ field.label }}</span>
+                {{ field }}
+                {% if field.errors %}
+                    <small>{{ field.errors|striptags }}</small>
+                {% endif %}
+            </label>
+        {% endfor %}
+
+        <div class="actions">
+            <button class="button" type="submit">{{ acao }}</button>
+            <a class="button button-secondary" href="{% url 'tarefas:painel' %}">Voltar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

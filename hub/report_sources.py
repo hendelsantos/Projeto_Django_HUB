@@ -3,10 +3,12 @@ from django.db.models import Count
 from chamados_ti.models import ChamadoTI
 from headcount.models import HeadcountImport
 from roupeiro.models import Armario
+from tarefas.models import Tarefa
 from zeladoria.models import ChamadoZeladoria
 
 
 STATUS_FINALIZADOS = ('concluido', 'cancelado')
+STATUS_FINAIS_TAREFAS = (Tarefa.Status.CONCLUIDA, Tarefa.Status.CANCELADA)
 
 
 def count_by_field(queryset, field_name, choices=None):
@@ -206,12 +208,46 @@ def get_headcount_source(ano, numero_mes):
     }
 
 
+def get_tarefas_source(ano, numero_mes):
+    tarefas = Tarefa.objects.filter(criado_em__year=ano, criado_em__month=numero_mes)
+
+    return {
+        'nome': 'Tarefas e Follow-up',
+        'slug': 'tarefas',
+        'tipo': 'Metricas e exportacao',
+        'tem_dados_consolidados': True,
+        'pendentes_rotulo': 'abertas',
+        'total': tarefas.count(),
+        'concluidos': tarefas.filter(status=Tarefa.Status.CONCLUIDA).count(),
+        'cancelados': tarefas.filter(status=Tarefa.Status.CANCELADA).count(),
+        'pendentes': tarefas.exclude(status__in=STATUS_FINAIS_TAREFAS).count(),
+        'sem_ticket': tarefas.exclude(status__in=STATUS_FINAIS_TAREFAS).filter(prazo__isnull=True).count(),
+        'por_status': count_by_field(tarefas, 'status', Tarefa.Status.choices),
+        'por_categoria': count_by_field(tarefas.exclude(area=''), 'area'),
+        'items': [
+            {
+                'area': 'Follow-up',
+                'titulo': tarefa.titulo,
+                'solicitante': tarefa.responsavel or 'Sem responsavel',
+                'referencia': tarefa.area or tarefa.origem or 'Sem referencia',
+                'status': tarefa.get_status_display(),
+                'ticket': '',
+                'data': tarefa.criado_em,
+                'detalhe': tarefa.descricao,
+                'follow_up': tarefa.follow_up or (f'Prazo: {tarefa.prazo.strftime("%d/%m/%Y")}' if tarefa.prazo else 'Sem prazo definido'),
+            }
+            for tarefa in tarefas
+        ],
+    }
+
+
 REPORT_SOURCE_BUILDERS = [
     get_ti_source,
     get_zeladoria_source,
     get_extrator_scanner_source,
     get_roupeiro_source,
     get_headcount_source,
+    get_tarefas_source,
 ]
 
 

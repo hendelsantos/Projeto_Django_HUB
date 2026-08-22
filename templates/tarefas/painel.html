@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Painel de Follow-up | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Gestao de tarefas</p>
+    <h1>Painel de Follow-up</h1>
+    <p>Filtre as pendencias, acompanhe prazos e registre a baixa quando o acompanhamento for concluido.</p>
+</section>
+
+<section class="toolbar-panel">
+    <form method="get" class="filter-form filter-form-wide">
+        <label>
+            <span>Busca</span>
+            <input type="search" name="busca" value="{{ busca }}" placeholder="Titulo, responsavel, area, origem ou follow-up">
+        </label>
+        <label>
+            <span>Status</span>
+            <select name="status">
+                <option value="">Todos</option>
+                {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if value == status_atual %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Prioridade</span>
+            <select name="prioridade">
+                <option value="">Todas</option>
+                {% for value, label in prioridade_choices %}
+                    <option value="{{ value }}" {% if value == prioridade_atual %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Mes</span>
+            <input type="month" name="mes" value="{{ mes }}">
+        </label>
+        <button class="button" type="submit">Filtrar</button>
+        <a class="button button-secondary" href="{% url 'tarefas:exportar_excel' %}">Exportar Excel</a>
+    </form>
+</section>
+
+<section class="table-panel">
+    <div class="table-header">
+        <h2>Tarefas cadastradas</h2>
+        <a class="button button-secondary" href="{% url 'tarefas:criar' %}">Nova tarefa</a>
+    </div>
+
+    <div class="responsive-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mes</th>
+                    <th>Titulo</th>
+                    <th>Responsavel</th>
+                    <th>Area</th>
+                    <th>Prioridade</th>
+                    <th>Status</th>
+                    <th>Prazo</th>
+                    <th>Acao</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tarefa in tarefas %}
+                    <tr>
+                        <td>#{{ tarefa.id }}</td>
+                        <td>{{ tarefa.mes_referencia }}</td>
+                        <td>{{ tarefa.titulo }}</td>
+                        <td>{{ tarefa.responsavel|default:'-' }}</td>
+                        <td>{{ tarefa.area|default:'-' }}</td>
+                        <td>{{ tarefa.get_prioridade_display }}</td>
+                        <td><span class="status-pill">{{ tarefa.get_status_display }}</span></td>
+                        <td>
+                            {% if tarefa.prazo %}
+                                {{ tarefa.prazo|date:'d/m/Y' }}
+                                {% if tarefa.esta_vencida %}<span class="badge badge-alert">Vencida</span>{% endif %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'tarefas:detalhe' tarefa.pk %}">Ver</a>
+                            <a href="{% url 'tarefas:editar' tarefa.pk %}">Editar</a>
+                            {% if tarefa.esta_aberta %}
+                                <form class="inline-form" method="post" action="{% url 'tarefas:concluir' tarefa.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button class="link-button" type="submit">Baixar</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9">Nenhuma tarefa encontrada.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

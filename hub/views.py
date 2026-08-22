@@ -15,6 +15,7 @@ from openpyxl.utils import get_column_letter
 from chamados_ti.models import ChamadoTI
 from headcount.models import BirthdayName, HeadcountMember
 from roupeiro.models import Armario
+from tarefas.models import Tarefa
 from zeladoria.models import ChamadoZeladoria
 
 from .report_sources import build_consolidated_report
@@ -78,6 +79,14 @@ def home(request):
             'status': 'Metricas',
             'icon': 'HC',
         },
+        {
+            'name': 'Tarefas e Follow-up',
+            'description': 'Cadastre pendencias com prazo e mantenha lembretes flutuantes ate registrar a baixa.',
+            'details': 'Ideal para lembrar cobrancas, retornos, acoes de rotina e pendencias que precisam ficar visiveis no dia a dia.',
+            'url_name': 'tarefas:index',
+            'status': 'Lembretes',
+            'icon': 'OK',
+        },
     ]
 
     if request.user.is_authenticated:
@@ -125,6 +134,7 @@ def buscar(request):
         resultados.extend(buscar_ti(query))
         resultados.extend(buscar_zeladoria(query))
         resultados.extend(buscar_headcount(query))
+        resultados.extend(buscar_tarefas(query))
 
     return render(
         request,
@@ -236,6 +246,28 @@ def buscar_headcount(query):
         for aniversariante in aniversariantes
     )
     return resultados
+
+
+def buscar_tarefas(query):
+    tarefas = Tarefa.objects.filter(
+        Q(titulo__icontains=query)
+        | Q(descricao__icontains=query)
+        | Q(responsavel__icontains=query)
+        | Q(area__icontains=query)
+        | Q(origem__icontains=query)
+        | Q(follow_up__icontains=query)
+    )[:10]
+
+    return [
+        {
+            'modulo': 'Follow-up',
+            'titulo': tarefa.titulo,
+            'descricao': f'{tarefa.responsavel or "Sem responsavel"} - {tarefa.get_status_display()}',
+            'extra': tarefa.area or tarefa.origem or tarefa.get_prioridade_display(),
+            'url': reverse('tarefas:detalhe', args=[tarefa.pk]),
+        }
+        for tarefa in tarefas
+    ]
 
 
 def relatorios(request):

@@ -28,6 +28,7 @@
                     <a href="{% url 'chamados_ti:index' %}">IT Calls</a>
                     <a href="{% url 'roupeiro:index' %}">Roupeiro</a>
                     <a href="{% url 'headcount:index' %}">Headcount</a>
+                    <a href="{% url 'tarefas:index' %}">Follow-up</a>
                     {% if request.user.is_authenticated %}
                         <a href="{% url 'hub:photocloud' %}">PhotoCloud</a>
                     {% endif %}
@@ -70,6 +71,39 @@
 
             {% block content %}{% endblock %}
         </main>
+
+        {% if followup_toasts_total %}
+            <aside class="followup-widget" aria-label="Lembretes de follow-up">
+                <details open>
+                    <summary>
+                        <span>Follow-ups</span>
+                        <strong>{{ followup_toasts_total }}</strong>
+                    </summary>
+                    <div class="followup-toast-list">
+                        {% for tarefa in followup_toasts %}
+                            <article class="followup-toast {% if tarefa.esta_vencida %}followup-toast-alert{% elif tarefa.vence_hoje %}followup-toast-warning{% endif %}">
+                                <div>
+                                    <span>{{ tarefa.get_prioridade_display }}</span>
+                                    <h2>{{ tarefa.titulo }}</h2>
+                                    <p>{{ tarefa.responsavel|default:'Sem responsavel' }}{% if tarefa.prazo %} · {{ tarefa.prazo|date:'d/m/Y' }}{% endif %}</p>
+                                </div>
+                                <div class="followup-toast-actions">
+                                    <a href="{% url 'tarefas:detalhe' tarefa.pk %}">Ver</a>
+                                    <form method="post" action="{% url 'tarefas:concluir' tarefa.pk %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit">Baixar</button>
+                                    </form>
+                                </div>
+                            </article>
+                        {% endfor %}
+                        {% if followup_toasts_total > followup_toasts|length %}
+                            <a class="followup-more" href="{% url 'tarefas:painel' %}">Ver todas as pendencias</a>
+                        {% endif %}
+                    </div>
+                </details>
+            </aside>
+        {% endif %}
 
         <footer class="footer">
             <p>Feito por Hendel Santos</p>

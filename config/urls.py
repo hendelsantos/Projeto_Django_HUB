@@ -32,6 +32,7 @@ urlpatterns = [
     path('chamados-ti/', include('chamados_ti.urls')),
     path('roupeiro/', include('roupeiro.urls')),
     path('headcount/', include('headcount.urls')),
+    path('tarefas/', include('tarefas.urls')),
     path('admin/', admin.site.urls),
 ]
 

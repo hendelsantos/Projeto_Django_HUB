@@ -1,12 +1,7 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="3" y="3" width="58" height="58" rx="13" fill="#F8FAFC"/>
-  <rect x="5" y="5" width="54" height="54" rx="11" stroke="#CBD5E1" stroke-width="2"/>
-  <path d="M13 51V31L27 21V31L41 21V31L53 24V51H13Z" fill="#020617"/>
-  <path d="M44 24L46 10H52L54 24L44 30V24Z" fill="#020617"/>
-  <rect x="46" y="7" width="7" height="4" rx="0.8" fill="#020617"/>
-  <rect x="19" y="39" width="8" height="7" fill="#F8FAFC"/>
-  <rect x="32" y="39" width="8" height="7" fill="#F8FAFC"/>
-  <rect x="45" y="38" width="7" height="13" fill="#F8FAFC"/>
-  <rect x="46" y="39" width="5" height="12" fill="#020617"/>
-  <path d="M12 51H54" stroke="#020617" stroke-width="3" stroke-linecap="round"/>
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="#111827"/>
+  <rect x="8" y="8" width="48" height="48" rx="10" fill="#F8FAFC"/>
+  <path d="M16 46V18H29.5C36 18 40 21.8 40 27.2C40 32.8 36 36.5 29.5 36.5H24V46H16ZM24 29.8H28.8C31 29.8 32.4 28.8 32.4 27.1C32.4 25.4 31 24.4 28.8 24.4H24V29.8Z" fill="#111827"/>
+  <path d="M37 46V18H45V28.2H49V18H57V46H49V35.2H45V46H37Z" fill="#1D5FD6"/>
+  <path d="M14 51H50" stroke="#0F8B6F" stroke-width="4" stroke-linecap="round"/>
 </svg>

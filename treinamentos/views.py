@@ -43,7 +43,14 @@ def criar(request):
             messages.success(request, 'Treinamento cadastrado com sucesso.')
             return redirect('treinamentos:detalhe', pk=treinamento.pk)
     else:
-        form = TreinamentoForm(initial={'data': timezone.localdate(), 'area': 'Pintura'})
+        data_inicial = request.GET.get('data') or timezone.localdate().isoformat()
+        form = TreinamentoForm(
+            initial={
+                'data': data_inicial,
+                'area': 'Pintura',
+                'status': TreinamentoSeguranca.Status.AGENDADO,
+            }
+        )
 
     return render(
         request,

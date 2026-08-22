@@ -69,6 +69,15 @@ class TreinamentoTests(TestCase):
         self.assertContains(calendario, 'Agenda de bloqueio de energias')
         self.assertContains(calendario, '14:30 - 15:30')
 
+    def test_calendario_abre_cadastro_com_data_preenchida(self):
+        data = timezone.localdate().replace(day=15)
+
+        calendario = self.client.get(reverse('treinamentos:calendario'), {'mes': data.strftime('%Y-%m')})
+        cadastro = self.client.get(reverse('treinamentos:criar'), {'data': data.isoformat()})
+
+        self.assertContains(calendario, f'?data={data.isoformat()}')
+        self.assertContains(cadastro, f'value="{data.isoformat()}"')
+
     def test_painel_e_exportacao_carregam(self):
         TreinamentoSeguranca.objects.create(
             titulo='Uso de EPI',

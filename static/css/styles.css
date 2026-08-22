@@ -663,8 +663,33 @@ html[data-theme="dark"] .badge {
     opacity: 0.62;
 }
 
-.training-day strong {
+.training-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.training-day-header strong {
     font-size: 18px;
+}
+
+.training-day-header a {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.training-day-header a:hover {
+    background: var(--primary-dark);
 }
 
 .training-day-items {

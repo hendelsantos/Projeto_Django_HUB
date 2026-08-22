@@ -1,10 +1,5 @@
-from io import BytesIO
-
-import qrcode
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
@@ -20,9 +15,6 @@ from treinamentos.models import ParticipanteTreinamento, TreinamentoSeguranca
 from zeladoria.models import ChamadoZeladoria
 
 from .report_sources import build_consolidated_report
-
-
-PHOTO_CLOUD_URL = 'https://photo-cloud-1.onrender.com/'
 
 
 def get_month_filter(request):
@@ -98,40 +90,7 @@ def home(request):
         },
     ]
 
-    if request.user.is_authenticated:
-        tools.append(
-            {
-                'name': 'PhotoCloud',
-                'description': 'Envie fotos pelo celular para uma galeria temporaria usando link direto ou QR Code.',
-                'details': 'Ideal para registrar evidencias visuais rapidamente: abra o QR Code no celular, informe nome e album, selecione as fotos e envie.',
-                'url_name': 'hub:photocloud',
-                'status': 'Fotos',
-                'icon': 'FOTO',
-            }
-        )
-
     return render(request, 'hub/home.html', {'tools': tools})
-
-
-@login_required(login_url='admin:login')
-def photocloud(request):
-    return render(
-        request,
-        'hub/photocloud.html',
-        {
-            'photo_cloud_url': PHOTO_CLOUD_URL,
-        },
-    )
-
-
-@login_required(login_url='admin:login')
-def photocloud_qrcode(request):
-    image = qrcode.make(PHOTO_CLOUD_URL)
-    output = BytesIO()
-    image.save(output, format='PNG')
-    output.seek(0)
-
-    return HttpResponse(output.getvalue(), content_type='image/png')
 
 
 def buscar(request):

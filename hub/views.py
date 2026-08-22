@@ -13,6 +13,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from chamados_ti.models import ChamadoTI
+from headcount.models import BirthdayName, HeadcountMember
 from roupeiro.models import Armario
 from zeladoria.models import ChamadoZeladoria
 
@@ -69,6 +70,14 @@ def home(request):
             'status': 'Novo app',
             'icon': 'ARM',
         },
+        {
+            'name': 'Headcount e Aniversariantes',
+            'description': 'Importe o headcount mensal, cruze com aniversariantes e acompanhe entradas, saidas, turnos e areas.',
+            'details': 'Use para gerar listas mensais de aniversariantes por turno e area, alem de comparar evolucao do headcount da pintura.',
+            'url_name': 'headcount:index',
+            'status': 'Metricas',
+            'icon': 'HC',
+        },
     ]
 
     if request.user.is_authenticated:
@@ -115,6 +124,7 @@ def buscar(request):
         resultados.extend(buscar_roupeiro(query))
         resultados.extend(buscar_ti(query))
         resultados.extend(buscar_zeladoria(query))
+        resultados.extend(buscar_headcount(query))
 
     return render(
         request,
@@ -192,6 +202,40 @@ def buscar_zeladoria(query):
         }
         for chamado in chamados
     ]
+
+
+def buscar_headcount(query):
+    membros = HeadcountMember.objects.filter(
+        Q(nome__icontains=query)
+        | Q(turno__icontains=query)
+        | Q(work_group__icontains=query)
+        | Q(team__icontains=query)
+        | Q(area__icontains=query)
+    ).select_related('importacao')[:10]
+    aniversariantes = BirthdayName.objects.filter(nome__icontains=query).select_related('lista', 'membro')[:10]
+
+    resultados = [
+        {
+            'modulo': 'Headcount',
+            'titulo': membro.nome,
+            'descricao': f'{membro.turno or "Sem turno"} - {membro.area or "Sem area"}',
+            'extra': membro.importacao.mes.strftime('%m/%Y'),
+            'url': reverse('headcount:detalhe', args=[membro.importacao.pk]),
+        }
+        for membro in membros
+    ]
+
+    resultados.extend(
+        {
+            'modulo': 'Aniversariantes',
+            'titulo': aniversariante.nome,
+            'descricao': 'Encontrado no headcount' if aniversariante.membro else 'Nao encontrado no headcount',
+            'extra': aniversariante.lista.mes.strftime('%m/%Y'),
+            'url': reverse('headcount:detalhe', args=[aniversariante.lista.headcount.pk]),
+        }
+        for aniversariante in aniversariantes
+    )
+    return resultados
 
 
 def relatorios(request):

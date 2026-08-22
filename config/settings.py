@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'zeladoria',
     'chamados_ti',
     'roupeiro',
+    'headcount',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

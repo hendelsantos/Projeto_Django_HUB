@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Headcount e Aniversariantes | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Headcount</p>
+    <h1>Headcount e aniversariantes</h1>
+    <p>Importe a lista mensal do departamento, cruze com aniversariantes do mes e acompanhe entradas, saidas, turnos e areas.</p>
+</section>
+
+<section class="metric-grid">
+    <article class="metric-card"><span>Headcount atual</span><strong>{{ total_atual }}</strong></article>
+    <article class="metric-card"><span>Aniversariantes</span><strong>{{ total_aniversariantes }}</strong></article>
+    <article class="metric-card"><span>Ultimo mes</span><strong>{% if ultima_importacao %}{{ ultima_importacao.mes|date:'m/Y' }}{% else %}-{% endif %}</strong></article>
+</section>
+
+<section class="action-grid">
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">+</span>
+            <span class="badge">Importar</span>
+        </div>
+        <div>
+            <h2>Nova importacao</h2>
+            <p>Suba o Excel do headcount e a imagem dos aniversariantes do mes para gerar a lista rastreavel.</p>
+        </div>
+        <a class="button" href="{% url 'headcount:importar' %}">Importar arquivos</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">%</span>
+            <span class="badge">Metricas</span>
+        </div>
+        <div>
+            <h2>Painel mensal</h2>
+            <p>Veja importacoes anteriores, quantidade de pessoas, aniversariantes, entradas e saidas.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'headcount:painel' %}">Ver painel</a>
+    </article>
+</section>
+{% endblock %}

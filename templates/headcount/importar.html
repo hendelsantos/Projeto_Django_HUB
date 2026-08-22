@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Importar Headcount | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Importacao mensal</p>
+    <h1>Importar headcount e aniversariantes</h1>
+    <p>Envie o Excel do headcount e a foto/lista de aniversariantes. Por enquanto, cole no campo de texto os nomes lidos da imagem, um por linha.</p>
+</section>
+
+<section class="upload-panel">
+    <form method="post" enctype="multipart/form-data" class="app-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <label class="form-field">
+                <span>{{ field.label }}</span>
+                {{ field }}
+                {% if field.errors %}
+                    <small>{{ field.errors|striptags }}</small>
+                {% endif %}
+            </label>
+        {% endfor %}
+
+        <div class="actions">
+            <button class="button" type="submit">Processar arquivos</button>
+            <a class="button button-secondary" href="{% url 'headcount:index' %}">Voltar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

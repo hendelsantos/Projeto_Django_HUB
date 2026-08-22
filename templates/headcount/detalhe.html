@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Headcount {{ importacao.mes|date:'m/Y' }} | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="detail-header">
+    <div class="intro">
+        <p class="eyebrow">Headcount {{ importacao.mes|date:'m/Y' }}</p>
+        <h1>Lista mensal consolidada</h1>
+        <p>{{ importacao.total_membros }} membros importados. {% if comparativo.previous %}Comparado com {{ comparativo.previous.mes|date:'m/Y' }}.{% else %}Primeira base importada.{% endif %}</p>
+    </div>
+    <div class="actions">
+        <a class="button" href="{% url 'headcount:exportar_excel' importacao.pk %}">Exportar Excel</a>
+        <a class="button button-secondary" href="{% url 'headcount:painel' %}">Voltar</a>
+    </div>
+</section>
+
+<section class="metric-grid">
+    <article class="metric-card"><span>Total do mes</span><strong>{{ importacao.total_membros }}</strong></article>
+    <article class="metric-card"><span>Entradas</span><strong>{{ comparativo.entradas|length }}</strong></article>
+    <article class="metric-card"><span>Saidas</span><strong>{{ comparativo.saidas|length }}</strong></article>
+    <article class="metric-card"><span>Aniversariantes</span><strong>{% if lista %}{{ lista.nomes.count }}{% else %}0{% endif %}</strong></article>
+</section>
+
+<section class="detail-grid">
+    <article class="table-panel">
+        <div class="table-header"><h2>Aniversariantes cruzados</h2></div>
+        <div class="responsive-table">
+            <table>
+                <thead><tr><th>Nome</th><th>Encontrado</th><th>Turno</th><th>Area</th></tr></thead>
+                <tbody>
+                    {% if lista %}
+                        {% for aniversariante in lista.nomes.all %}
+                            <tr>
+                                <td>{{ aniversariante.nome }}</td>
+                                <td>{% if aniversariante.membro %}Sim{% else %}Nao{% endif %}</td>
+                                <td>{{ aniversariante.membro.turno|default:'-' }}</td>
+                                <td>{{ aniversariante.membro.area|default:'-' }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="4">Nenhum nome extraido da lista.</td></tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="4">Nenhuma lista vinculada.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <aside class="report-side">
+        <article class="table-panel">
+            <div class="table-header"><h2>Por turno</h2></div>
+            <div class="compact-table">
+                <table>
+                    <thead><tr><th>Turno</th><th>Total</th></tr></thead>
+                    <tbody>
+                        {% for item in por_turno %}
+                            <tr><td>{{ item.turno|default:'Nao informado' }}</td><td>{{ item.total }}</td></tr>
+                        {% empty %}
+                            <tr><td colspan="2">Sem dados.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="table-panel">
+            <div class="table-header"><h2>Top areas</h2></div>
+            <div class="compact-table">
+                <table>
+                    <thead><tr><th>Area</th><th>Total</th></tr></thead>
+                    <tbody>
+                        {% for item in por_area %}
+                            <tr><td>{{ item.area|default:'Nao informado' }}</td><td>{{ item.total }}</td></tr>
+                        {% empty %}
+                            <tr><td colspan="2">Sem dados.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </aside>
+</section>
+{% endblock %}

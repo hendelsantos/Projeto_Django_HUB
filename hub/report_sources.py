@@ -1,6 +1,7 @@
 from django.db.models import Count
 
 from chamados_ti.models import ChamadoTI
+from headcount.models import HeadcountImport
 from roupeiro.models import Armario
 from zeladoria.models import ChamadoZeladoria
 
@@ -148,11 +149,69 @@ def get_roupeiro_source(_ano, _numero_mes):
     }
 
 
+def get_headcount_source(ano, numero_mes):
+    importacao = (
+        HeadcountImport.objects.filter(mes__year=ano, mes__month=numero_mes)
+        .order_by('-criado_em')
+        .first()
+    )
+
+    if not importacao:
+        return {
+            'nome': 'Headcount e Aniversariantes',
+            'slug': 'headcount',
+            'tipo': 'Metricas e exportacao',
+            'tem_dados_consolidados': True,
+            'pendentes_rotulo': 'sem base',
+            'total': 0,
+            'concluidos': 0,
+            'cancelados': 0,
+            'pendentes': 0,
+            'sem_ticket': 0,
+            'por_status': [],
+            'por_categoria': [],
+            'items': [],
+        }
+
+    lista = importacao.listas_aniversariantes.first()
+    aniversariantes = lista.nomes.select_related('membro') if lista else []
+
+    return {
+        'nome': 'Headcount e Aniversariantes',
+        'slug': 'headcount',
+        'tipo': 'Metricas e exportacao',
+        'tem_dados_consolidados': True,
+        'pendentes_rotulo': 'na pintura',
+        'total': importacao.total_membros,
+        'concluidos': importacao.total_membros,
+        'cancelados': 0,
+        'pendentes': 0,
+        'sem_ticket': 0,
+        'por_status': [],
+        'por_categoria': count_by_field(importacao.membros.exclude(turno=''), 'turno'),
+        'items': [
+            {
+                'area': 'Headcount',
+                'titulo': f'Aniversariante - {aniversariante.nome}',
+                'solicitante': aniversariante.nome,
+                'referencia': aniversariante.membro.area if aniversariante.membro else 'Nao encontrado no headcount',
+                'status': 'Encontrado' if aniversariante.membro else 'Pendente',
+                'ticket': '',
+                'data': importacao.criado_em,
+                'detalhe': f'Turno: {aniversariante.membro.turno}' if aniversariante.membro else 'Nome nao localizado na base mensal.',
+                'follow_up': f'Base {importacao.mes.strftime("%m/%Y")}',
+            }
+            for aniversariante in aniversariantes
+        ],
+    }
+
+
 REPORT_SOURCE_BUILDERS = [
     get_ti_source,
     get_zeladoria_source,
     get_extrator_scanner_source,
     get_roupeiro_source,
+    get_headcount_source,
 ]
 
 

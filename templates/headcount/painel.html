@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Painel Headcount | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Historico mensal</p>
+    <h1>Painel de headcount</h1>
+    <p>Acompanhe as importacoes mensais, quantidade de membros e relatórios gerados.</p>
+</section>
+
+<section class="table-panel">
+    <div class="table-header">
+        <h2>Importacoes</h2>
+        <a class="button button-secondary" href="{% url 'headcount:importar' %}">Nova importacao</a>
+    </div>
+    <div class="responsive-table">
+        <table>
+            <thead>
+                <tr><th>Mes</th><th>Total</th><th>Criado em</th><th>Acao</th></tr>
+            </thead>
+            <tbody>
+                {% for importacao in importacoes %}
+                    <tr>
+                        <td>{{ importacao.mes|date:'m/Y' }}</td>
+                        <td>{{ importacao.total_membros }}</td>
+                        <td>{{ importacao.criado_em|date:'d/m/Y H:i' }}</td>
+                        <td>
+                            <a href="{% url 'headcount:detalhe' importacao.pk %}">Ver</a>
+                            <a href="{% url 'headcount:exportar_excel' importacao.pk %}">Excel</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4">Nenhuma importacao cadastrada.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

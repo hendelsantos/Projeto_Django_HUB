@@ -1,11 +1,26 @@
-<svg width="168" height="48" viewBox="0 0 168 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Paint HUB Solucoes Digitais</title>
-  <desc id="desc">Marca do hub de ferramentas digitais da Paint Shop</desc>
-  <rect x="1" y="1" width="46" height="46" rx="10" fill="#17212B"/>
-  <path d="M13 14.5C13 12.567 14.567 11 16.5 11H29.5C34.1944 11 38 14.8056 38 19.5C38 24.1944 34.1944 28 29.5 28H21V37H13V14.5Z" fill="#F7C948"/>
-  <path d="M21 18.2V21.8H29.4C30.3941 21.8 31.2 20.9941 31.2 20C31.2 19.0059 30.3941 18.2 29.4 18.2H21Z" fill="#17212B"/>
-  <path d="M38 10L42 14L38 18L34 14L38 10Z" fill="#34D399"/>
-  <path d="M8 30L12 34L8 38L4 34L8 30Z" fill="#60A5FA"/>
-  <text x="58" y="20" fill="#17212B" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="800">Paint HUB</text>
-  <text x="58" y="36" fill="#64717F" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700">Solucoes Digitais</text>
+<svg width="230" height="56" viewBox="0 0 230 56" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Paint HUB Soluções Digitais</title>
+  <desc id="desc">Logo do Paint HUB Soluções Digitais</desc>
+  <defs>
+    <linearGradient id="markGradient" x1="6" y1="7" x2="51" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17324D"/>
+      <stop offset="0.58" stop-color="#1D5FD6"/>
+      <stop offset="1" stop-color="#0F8B6F"/>
+    </linearGradient>
+    <linearGradient id="paintStroke" x1="9" y1="44" x2="47" y2="14" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7C948"/>
+      <stop offset="0.55" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#60A5FA"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="54" height="54" rx="14" fill="#FFFFFF"/>
+  <rect x="3.5" y="3.5" width="49" height="49" rx="12" fill="url(#markGradient)"/>
+  <path d="M13 39.5C20.5 23.8 31.2 15.2 45 13" stroke="url(#paintStroke)" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="43.5" cy="13.5" r="4.5" fill="#F7C948"/>
+  <path d="M15 16H25.4C31.1 16 34.8 19.45 34.8 24.35C34.8 29.25 31.1 32.7 25.4 32.7H21.7V40H15V16ZM21.7 21.8V26.9H25.2C27 26.9 28.1 25.9 28.1 24.35C28.1 22.8 27 21.8 25.2 21.8H21.7Z" fill="#FFFFFF"/>
+  <path d="M34.8 26.2H41.2V40H34.8V34.9H29.4V29.6H34.8V26.2Z" fill="#FFFFFF" opacity="0.92"/>
+  <text x="68" y="23" fill="#17212B" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="0">Paint HUB</text>
+  <text x="68" y="41" fill="#0F8B6F" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="0">Soluções Digitais</text>
+  <path d="M68 48H190" stroke="#DDE3EA" stroke-width="2" stroke-linecap="round"/>
+  <path d="M68 48H128" stroke="#F7C948" stroke-width="2" stroke-linecap="round"/>
 </svg>

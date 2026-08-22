@@ -105,15 +105,15 @@ a {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    min-width: 168px;
+    min-width: 230px;
     font-size: 18px;
     font-weight: 700;
 }
 
 .brand-logo {
     display: block;
-    width: 168px;
-    height: 48px;
+    width: 230px;
+    height: 56px;
     padding: 2px 8px 2px 0;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.78);
@@ -912,6 +912,12 @@ td a {
 
     .topbar nav {
         width: 100%;
+    }
+
+    .brand,
+    .brand-logo {
+        width: min(100%, 230px);
+        min-width: 0;
     }
 
     .topbar-actions {

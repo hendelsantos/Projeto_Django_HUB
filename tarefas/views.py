@@ -92,6 +92,68 @@ def painel(request):
     )
 
 
+def kanban(request):
+    tarefas = Tarefa.objects.all()
+    colunas = [
+        {
+            'status': Tarefa.Status.PENDENTE,
+            'titulo': 'A fazer',
+            'tarefas': tarefas.filter(status=Tarefa.Status.PENDENTE),
+        },
+        {
+            'status': Tarefa.Status.EM_ANDAMENTO,
+            'titulo': 'Em andamento',
+            'tarefas': tarefas.filter(status=Tarefa.Status.EM_ANDAMENTO),
+        },
+        {
+            'status': Tarefa.Status.CONCLUIDA,
+            'titulo': 'Concluido',
+            'tarefas': tarefas.filter(status=Tarefa.Status.CONCLUIDA),
+        },
+        {
+            'status': Tarefa.Status.CANCELADA,
+            'titulo': 'Cancelado',
+            'tarefas': tarefas.filter(status=Tarefa.Status.CANCELADA),
+        },
+    ]
+
+    hoje = timezone.localdate()
+    abertas = tarefas.exclude(status__in=STATUS_FINAIS)
+
+    return render(
+        request,
+        'tarefas/kanban.html',
+        {
+            'colunas': colunas,
+            'abertas': abertas.count(),
+            'vencidas': abertas.filter(prazo__lt=hoje).count(),
+            'em_andamento': tarefas.filter(status=Tarefa.Status.EM_ANDAMENTO).count(),
+            'concluidas_mes': tarefas.filter(
+                status=Tarefa.Status.CONCLUIDA,
+                concluido_em__year=hoje.year,
+                concluido_em__month=hoje.month,
+            ).count(),
+        },
+    )
+
+
+def alterar_status(request, pk):
+    tarefa = get_object_or_404(Tarefa, pk=pk)
+
+    if request.method == 'POST':
+        novo_status = request.POST.get('status')
+        if novo_status in Tarefa.Status.values:
+            tarefa.status = novo_status
+            if novo_status == Tarefa.Status.EM_ANDAMENTO and not tarefa.follow_up:
+                tarefa.follow_up = 'Movida para em andamento pelo Kanban administrativo.'
+            tarefa.save()
+            messages.success(request, 'Status da tarefa atualizado.')
+        else:
+            messages.error(request, 'Status invalido.')
+
+    return redirect(request.POST.get('next') or 'tarefas:kanban')
+
+
 def detalhe(request, pk):
     tarefa = get_object_or_404(Tarefa, pk=pk)
     return render(request, 'tarefas/detalhe.html', {'tarefa': tarefa})

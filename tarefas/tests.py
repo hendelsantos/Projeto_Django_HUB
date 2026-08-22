@@ -34,3 +34,19 @@ class TarefaTests(TestCase):
         self.assertRedirects(response, reverse('tarefas:painel'))
         self.assertEqual(tarefa.status, Tarefa.Status.CONCLUIDA)
         self.assertIsNotNone(tarefa.concluido_em)
+
+    def test_kanban_exibe_e_move_tarefa_existente(self):
+        tarefa = Tarefa.objects.create(titulo='Preparar ata administrativa')
+
+        response = self.client.get(reverse('tarefas:kanban'))
+        self.assertContains(response, 'Preparar ata administrativa')
+        self.assertContains(response, 'Kanban administrativo')
+
+        response = self.client.post(
+            reverse('tarefas:alterar_status', args=[tarefa.pk]),
+            {'status': Tarefa.Status.EM_ANDAMENTO},
+        )
+        tarefa.refresh_from_db()
+
+        self.assertRedirects(response, reverse('tarefas:kanban'))
+        self.assertEqual(tarefa.status, Tarefa.Status.EM_ANDAMENTO)

@@ -80,12 +80,12 @@ def home(request):
             'icon': 'HC',
         },
         {
-            'name': 'Tarefas e Follow-up',
-            'description': 'Cadastre pendencias com prazo e mantenha lembretes flutuantes ate registrar a baixa.',
-            'details': 'Ideal para lembrar cobrancas, retornos, acoes de rotina e pendencias que precisam ficar visiveis no dia a dia.',
-            'url_name': 'tarefas:index',
-            'status': 'Lembretes',
-            'icon': 'OK',
+            'name': 'Kanban Administrativo',
+            'description': 'Organize tarefas e follow-ups em um quadro visual com lembretes flutuantes.',
+            'details': 'Use para acompanhar pendencias administrativas por etapa, responsavel, prazo e prioridade sem duplicar cadastro.',
+            'url_name': 'tarefas:kanban',
+            'status': 'Follow-up',
+            'icon': 'KAN',
         },
     ]
 

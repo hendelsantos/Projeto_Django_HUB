@@ -21,6 +21,14 @@
                 <img class="brand-logo brand-logo-dark" src="{% static 'img/logo-dark.svg' %}" alt="Paint HUB Solucoes Digitais">
             </a>
             <div class="topbar-actions">
+                <form class="global-search" method="get" action="{% url 'hub:buscar' %}">
+                    <label>
+                        <span>Busca global</span>
+                        <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Buscar armario, usuario, chamado...">
+                    </label>
+                    <button type="submit">Buscar</button>
+                </form>
+
                 <nav aria-label="Navegacao principal">
                     <a href="{% url 'hub:home' %}">Home</a>
                     <a href="{% url 'extrator_scanner:index' %}">Extractor</a>

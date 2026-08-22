@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Busca global | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Busca global</p>
+    <h1>Resultados da busca</h1>
+    {% if query %}
+        <p>{{ total_resultados }} resultado{{ total_resultados|pluralize }} encontrado{{ total_resultados|pluralize }} para "{{ query }}".</p>
+    {% else %}
+        <p>Digite um termo para localizar armarios, usuarios, chamados de TI, zeladoria ou tickets.</p>
+    {% endif %}
+</section>
+
+<section class="toolbar-panel">
+    <form class="filter-form global-search-page" method="get" action="{% url 'hub:buscar' %}">
+        <label>
+            <span>Pesquisar</span>
+            <input type="search" name="q" value="{{ query }}" placeholder="Ex.: 12, Maria, notebook, vazamento, ticket">
+        </label>
+        <button class="button" type="submit">Buscar</button>
+    </form>
+</section>
+
+<section class="search-results" aria-label="Resultados encontrados">
+    {% for resultado in resultados %}
+        <a class="search-result-card" href="{{ resultado.url }}">
+            <span class="badge">{{ resultado.modulo }}</span>
+            <div>
+                <h2>{{ resultado.titulo }}</h2>
+                <p>{{ resultado.descricao }}</p>
+                <small>{{ resultado.extra }}</small>
+            </div>
+        </a>
+    {% empty %}
+        <article class="table-panel">
+            <p class="empty-text">
+                {% if query %}
+                    Nenhum resultado encontrado. Tente buscar por nome, numero, local, ticket ou descricao.
+                {% else %}
+                    Use o campo acima para iniciar a busca.
+                {% endif %}
+            </p>
+        </article>
+    {% endfor %}
+</section>
+{% endblock %}

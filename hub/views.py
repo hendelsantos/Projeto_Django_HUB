@@ -3,12 +3,18 @@ from io import BytesIO
 import qrcode
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils import timezone
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
+
+from chamados_ti.models import ChamadoTI
+from roupeiro.models import Armario
+from zeladoria.models import ChamadoZeladoria
 
 from .report_sources import build_consolidated_report
 
@@ -99,6 +105,93 @@ def photocloud_qrcode(request):
     output.seek(0)
 
     return HttpResponse(output.getvalue(), content_type='image/png')
+
+
+def buscar(request):
+    query = request.GET.get('q', '').strip()
+    resultados = []
+
+    if query:
+        resultados.extend(buscar_roupeiro(query))
+        resultados.extend(buscar_ti(query))
+        resultados.extend(buscar_zeladoria(query))
+
+    return render(
+        request,
+        'hub/busca.html',
+        {
+            'query': query,
+            'resultados': resultados,
+            'total_resultados': len(resultados),
+        },
+    )
+
+
+def buscar_roupeiro(query):
+    filtros = Q(usuario__icontains=query) | Q(observacoes__icontains=query)
+    if query.isdigit():
+        numero = int(query)
+        filtros |= (
+            Q(numero=numero)
+            | Q(tamanho_camisa_numero=numero)
+            | Q(tamanho_calca_numero=numero)
+            | Q(tamanho_macacao_numero=numero)
+        )
+
+    return [
+        {
+            'modulo': 'Roupeiro',
+            'titulo': f'Armario #{armario.numero}',
+            'descricao': f'{armario.usuario or "Sem usuario"} - {armario.get_status_display()}',
+            'extra': armario.get_turno_display() if armario.turno else 'Sem turno',
+            'url': reverse('roupeiro:detalhe', args=[armario.pk]),
+        }
+        for armario in Armario.objects.filter(filtros)[:10]
+    ]
+
+
+def buscar_ti(query):
+    chamados = ChamadoTI.objects.filter(
+        Q(titulo__icontains=query)
+        | Q(solicitante__icontains=query)
+        | Q(setor__icontains=query)
+        | Q(descricao__icontains=query)
+        | Q(ticket_oficial__icontains=query)
+        | Q(solucao__icontains=query)
+    )[:10]
+
+    return [
+        {
+            'modulo': 'TI',
+            'titulo': chamado.titulo,
+            'descricao': f'{chamado.solicitante} - {chamado.get_status_display()}',
+            'extra': chamado.get_categoria_display(),
+            'url': reverse('chamados_ti:detalhe', args=[chamado.pk]),
+        }
+        for chamado in chamados
+    ]
+
+
+def buscar_zeladoria(query):
+    chamados = ChamadoZeladoria.objects.filter(
+        Q(titulo__icontains=query)
+        | Q(solicitante__icontains=query)
+        | Q(local__icontains=query)
+        | Q(descricao__icontains=query)
+        | Q(ticket_oficial__icontains=query)
+        | Q(observacoes__icontains=query)
+    )[:10]
+
+    return [
+        {
+            'modulo': 'Zeladoria',
+            'titulo': chamado.titulo,
+            'descricao': f'{chamado.solicitante} - {chamado.get_status_display()}',
+            'extra': chamado.local,
+            'url': reverse('zeladoria:detalhe', args=[chamado.pk]),
+        }
+        for chamado in chamados
+    ]
 
 
 def relatorios(request):

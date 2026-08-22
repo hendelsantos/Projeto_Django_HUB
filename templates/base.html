@@ -12,6 +12,7 @@
     <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/theme.js' %}" defer></script>
+    <script src="{% static 'js/followup-toasts.js' %}" defer></script>
 </head>
 <body>
     <div class="site-shell">
@@ -73,6 +74,7 @@
         </main>
 
         {% if followup_toasts_total %}
+            {{ followup_toast_payload|json_script:"followup-toast-data" }}
             <aside class="followup-widget" aria-label="Lembretes de follow-up">
                 <details open>
                     <summary>

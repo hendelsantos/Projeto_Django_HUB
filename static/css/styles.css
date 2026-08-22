@@ -613,6 +613,105 @@ html[data-theme="dark"] .badge {
     grid-template-columns: minmax(220px, 1.3fr) minmax(160px, 0.8fr) minmax(160px, 0.8fr) minmax(140px, 0.7fr) auto auto;
 }
 
+.training-calendar {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.training-calendar-header {
+    display: grid;
+    gap: 14px;
+    padding: 18px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-soft);
+}
+
+.training-calendar-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.training-weekdays,
+.training-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.training-weekdays span {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.training-day {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    min-height: 150px;
+    padding: 12px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+}
+
+.training-day-muted {
+    background: var(--surface-soft);
+    opacity: 0.62;
+}
+
+.training-day strong {
+    font-size: 18px;
+}
+
+.training-day-items {
+    display: grid;
+    gap: 8px;
+}
+
+.training-event {
+    display: grid;
+    gap: 3px;
+    padding: 9px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    background: var(--primary-soft);
+}
+
+.training-event-realizado {
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.training-event-cancelado {
+    border-left-color: var(--badge-muted-ink);
+    background: var(--disabled-bg);
+}
+
+.training-event span,
+.training-event small,
+.training-day-empty {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.training-event b {
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+.training-day-empty {
+    display: inline-flex;
+    padding: 8px;
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+}
+
 .table-header,
 .detail-header {
     display: flex;
@@ -1515,5 +1614,18 @@ td a {
 
     .kanban-board {
         grid-template-columns: 1fr;
+    }
+
+    .training-weekdays {
+        display: none;
+    }
+
+    .training-calendar-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .training-day {
+        min-height: auto;
+        border-right: 0;
     }
 }

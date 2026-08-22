@@ -43,5 +43,7 @@ def sync_participants(treinamento):
         )
 
     treinamento.total_participantes = len(participants)
-    treinamento.save(update_fields=['total_participantes', 'atualizado_em'])
+    if participants and treinamento.status == treinamento.Status.AGENDADO:
+        treinamento.status = treinamento.Status.REALIZADO
+    treinamento.save(update_fields=['total_participantes', 'status', 'atualizado_em'])
     return participants

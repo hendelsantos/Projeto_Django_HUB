@@ -21,7 +21,10 @@ class TreinamentoTests(TestCase):
             {
                 'titulo': 'Seguranca na pintura',
                 'categoria': TreinamentoSeguranca.Categoria.SEGURANCA,
+                'status': TreinamentoSeguranca.Status.AGENDADO,
                 'data': timezone.localdate().isoformat(),
+                'hora_inicio': '08:00',
+                'hora_fim': '09:00',
                 'empresa': 'Paint Shop',
                 'area': 'Pintura',
                 'instrutor': 'Hendel',
@@ -35,13 +38,44 @@ class TreinamentoTests(TestCase):
         treinamento = TreinamentoSeguranca.objects.get()
         self.assertRedirects(response, reverse('treinamentos:detalhe', args=[treinamento.pk]))
         self.assertEqual(treinamento.total_participantes, 2)
+        self.assertEqual(treinamento.status, TreinamentoSeguranca.Status.REALIZADO)
         self.assertEqual(treinamento.participantes.count(), 2)
+
+    def test_agenda_treinamento_sem_documento(self):
+        response = self.client.post(
+            reverse('treinamentos:criar'),
+            {
+                'titulo': 'Agenda de bloqueio de energias',
+                'categoria': TreinamentoSeguranca.Categoria.SEGURANCA,
+                'status': TreinamentoSeguranca.Status.AGENDADO,
+                'data': timezone.localdate().isoformat(),
+                'hora_inicio': '14:30',
+                'hora_fim': '15:30',
+                'empresa': 'Paint Shop',
+                'area': 'Pintura',
+                'instrutor': 'Instrutor Segurança',
+                'carga_horaria': '1h',
+                'texto_participantes': '',
+                'observacoes': 'Agendado para proxima turma.',
+            },
+        )
+
+        treinamento = TreinamentoSeguranca.objects.get(titulo='Agenda de bloqueio de energias')
+        calendario = self.client.get(reverse('treinamentos:calendario'), {'mes': timezone.localdate().strftime('%Y-%m')})
+
+        self.assertRedirects(response, reverse('treinamentos:detalhe', args=[treinamento.pk]))
+        self.assertEqual(treinamento.status, TreinamentoSeguranca.Status.AGENDADO)
+        self.assertFalse(treinamento.documento)
+        self.assertContains(calendario, 'Agenda de bloqueio de energias')
+        self.assertContains(calendario, '14:30 - 15:30')
 
     def test_painel_e_exportacao_carregam(self):
         TreinamentoSeguranca.objects.create(
             titulo='Uso de EPI',
             categoria=TreinamentoSeguranca.Categoria.SEGURANCA,
+            status=TreinamentoSeguranca.Status.REALIZADO,
             data=timezone.localdate(),
+            hora_inicio='08:00',
             empresa='Paint Shop',
             area='Pintura',
             documento=make_document(),

@@ -266,10 +266,10 @@ def get_treinamentos_source(ano, numero_mes):
                 'titulo': treinamento.titulo,
                 'solicitante': treinamento.instrutor or treinamento.empresa,
                 'referencia': treinamento.empresa,
-                'status': f'{treinamento.total_participantes} participantes',
+                'status': f'{treinamento.get_status_display()} - {treinamento.total_participantes} participantes',
                 'ticket': '',
                 'data': treinamento.criado_em,
-                'detalhe': f'Data: {treinamento.data.strftime("%d/%m/%Y")} | Area: {treinamento.area}',
+                'detalhe': f'Data: {treinamento.data.strftime("%d/%m/%Y")} | Horario: {treinamento.horario} | Area: {treinamento.area}',
                 'follow_up': treinamento.observacoes or 'Documento escaneado armazenado.',
             }
             for treinamento in treinamentos

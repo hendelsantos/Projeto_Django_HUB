@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Calendario de Treinamentos | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="detail-header">
+    <div class="intro">
+        <p class="eyebrow">Agenda de seguranca</p>
+        <h1>Calendario de treinamentos</h1>
+        <p>Marque dia, horario e instrutor dos treinamentos de seguranca da pintura, depois anexe o scanner e participantes quando realizar.</p>
+    </div>
+    <div class="actions">
+        <a class="button" href="{% url 'treinamentos:criar' %}">Agendar treinamento</a>
+        <a class="button button-secondary" href="{% url 'treinamentos:painel' %}">Ver painel</a>
+    </div>
+</section>
+
+<section class="metric-grid" aria-label="Resumo da agenda">
+    <article class="metric-card">
+        <span>Agendados</span>
+        <strong>{{ total_agendados }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Realizados</span>
+        <strong>{{ total_realizados }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Cancelados</span>
+        <strong>{{ total_cancelados }}</strong>
+    </article>
+</section>
+
+<section class="toolbar-panel">
+    <form method="get" class="filter-form metric-filter">
+        <label>
+            <span>Mes</span>
+            <input type="month" name="mes" value="{{ mes }}">
+        </label>
+        <button class="button" type="submit">Abrir mes</button>
+        <a class="button button-secondary" href="{% url 'treinamentos:calendario' %}?mes={{ mes_anterior }}">Anterior</a>
+        <a class="button button-secondary" href="{% url 'treinamentos:calendario' %}?mes={{ proximo_mes }}">Proximo</a>
+    </form>
+</section>
+
+<section class="training-calendar" aria-label="Calendario mensal de treinamentos">
+    <header class="training-calendar-header">
+        <h2>{{ mes_label }}</h2>
+        <div class="training-weekdays">
+            <span>Seg</span>
+            <span>Ter</span>
+            <span>Qua</span>
+            <span>Qui</span>
+            <span>Sex</span>
+            <span>Sab</span>
+            <span>Dom</span>
+        </div>
+    </header>
+
+    <div class="training-calendar-grid">
+        {% for dia in dias %}
+            <article class="training-day {% if dia.fora_mes %}training-day-muted{% endif %}">
+                <strong>{{ dia.data|date:'d' }}</strong>
+                <div class="training-day-items">
+                    {% for treinamento in dia.treinamentos %}
+                        <a class="training-event training-event-{{ treinamento.status }}" href="{% url 'treinamentos:detalhe' treinamento.pk %}">
+                            <span>{{ treinamento.horario }}</span>
+                            <b>{{ treinamento.titulo }}</b>
+                            <small>{{ treinamento.instrutor|default:'Sem instrutor' }}</small>
+                        </a>
+                    {% empty %}
+                        <span class="training-day-empty">Livre</span>
+                    {% endfor %}
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

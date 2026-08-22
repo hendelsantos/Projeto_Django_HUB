@@ -40,7 +40,10 @@
 <section class="table-panel">
     <div class="table-header">
         <h2>Treinamentos cadastrados</h2>
-        <a class="button button-secondary" href="{% url 'treinamentos:criar' %}">Novo treinamento</a>
+        <div class="actions">
+            <a class="button button-secondary" href="{% url 'treinamentos:calendario' %}">Calendario</a>
+            <a class="button button-secondary" href="{% url 'treinamentos:criar' %}">Novo treinamento</a>
+        </div>
     </div>
 
     <div class="responsive-table">
@@ -48,11 +51,13 @@
             <thead>
                 <tr>
                     <th>Data</th>
+                    <th>Horario</th>
                     <th>Treinamento</th>
                     <th>Empresa</th>
                     <th>Area</th>
                     <th>Categoria</th>
                     <th>Instrutor</th>
+                    <th>Status</th>
                     <th>Participantes</th>
                     <th>Validade</th>
                     <th>Acao</th>
@@ -62,11 +67,13 @@
                 {% for treinamento in treinamentos %}
                     <tr>
                         <td>{{ treinamento.data|date:'d/m/Y' }}</td>
+                        <td>{{ treinamento.horario }}</td>
                         <td>{{ treinamento.titulo }}</td>
                         <td>{{ treinamento.empresa }}</td>
                         <td>{{ treinamento.area }}</td>
                         <td>{{ treinamento.get_categoria_display }}</td>
                         <td>{{ treinamento.instrutor|default:'-' }}</td>
+                        <td><span class="status-pill">{{ treinamento.get_status_display }}</span></td>
                         <td>{{ treinamento.total_participantes }}</td>
                         <td>
                             {{ treinamento.validade|date:'d/m/Y'|default:'-' }}
@@ -79,7 +86,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="9">Nenhum treinamento encontrado.</td>
+                        <td colspan="11">Nenhum treinamento encontrado.</td>
                     </tr>
                 {% endfor %}
             </tbody>

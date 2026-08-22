@@ -300,8 +300,8 @@ def buscar_treinamentos(query):
         {
             'modulo': 'Treinamentos',
             'titulo': treinamento.titulo,
-            'descricao': f'{treinamento.empresa} - {treinamento.data.strftime("%d/%m/%Y")}',
-            'extra': f'{treinamento.total_participantes} participantes',
+            'descricao': f'{treinamento.empresa} - {treinamento.data.strftime("%d/%m/%Y")} - {treinamento.horario}',
+            'extra': f'{treinamento.get_status_display()} - {treinamento.total_participantes} participantes',
             'url': reverse('treinamentos:detalhe', args=[treinamento.pk]),
         }
         for treinamento in treinamentos

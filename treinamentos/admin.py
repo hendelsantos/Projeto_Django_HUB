@@ -10,8 +10,8 @@ class ParticipanteInline(admin.TabularInline):
 
 @admin.register(TreinamentoSeguranca)
 class TreinamentoSegurancaAdmin(admin.ModelAdmin):
-    list_display = ['titulo', 'data', 'empresa', 'area', 'categoria', 'total_participantes', 'validade']
-    list_filter = ['categoria', 'empresa', 'area', 'data', 'validade']
+    list_display = ['titulo', 'data', 'hora_inicio', 'empresa', 'area', 'instrutor', 'status', 'total_participantes', 'validade']
+    list_filter = ['status', 'categoria', 'empresa', 'area', 'data', 'validade']
     search_fields = ['titulo', 'empresa', 'area', 'instrutor', 'participantes__nome']
     readonly_fields = ['total_participantes', 'criado_em', 'atualizado_em']
     inlines = [ParticipanteInline]

@@ -9,7 +9,10 @@ class TreinamentoForm(forms.ModelForm):
         fields = [
             'titulo',
             'categoria',
+            'status',
             'data',
+            'hora_inicio',
+            'hora_fim',
             'empresa',
             'area',
             'instrutor',
@@ -22,6 +25,8 @@ class TreinamentoForm(forms.ModelForm):
         widgets = {
             'titulo': forms.TextInput(attrs={'placeholder': 'Ex.: Treinamento de seguranca na pintura'}),
             'data': forms.DateInput(attrs={'type': 'date'}),
+            'hora_inicio': forms.TimeInput(attrs={'type': 'time'}),
+            'hora_fim': forms.TimeInput(attrs={'type': 'time'}),
             'empresa': forms.TextInput(attrs={'placeholder': 'Ex.: Paint Shop, Terceiro, Fornecedor'}),
             'area': forms.TextInput(attrs={'placeholder': 'Ex.: Pintura, Preparacao, Cabine'}),
             'instrutor': forms.TextInput(attrs={'placeholder': 'Nome do instrutor'}),

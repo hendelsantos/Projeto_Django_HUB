@@ -80,6 +80,20 @@ class TreinamentoTests(TestCase):
         self.assertContains(calendario, f'?data={data.isoformat()}')
         self.assertContains(cadastro, f'value="{data.isoformat()}"')
 
+    def test_calendario_destaca_terca_quinta_com_horarios_preferenciais(self):
+        data = timezone.datetime(2026, 9, 1).date()
+
+        calendario = self.client.get(reverse('treinamentos:calendario'), {'mes': data.strftime('%Y-%m')})
+        cadastro = self.client.get(
+            reverse('treinamentos:criar'),
+            {'data': data.isoformat(), 'hora': '09:30'},
+        )
+
+        self.assertContains(calendario, f'?data={data.isoformat()}&hora=09:30')
+        self.assertContains(calendario, '13:30')
+        self.assertContains(calendario, 'Preferencial')
+        self.assertContains(cadastro, 'value="09:30"')
+
     def test_painel_e_exportacao_carregam(self):
         TreinamentoSeguranca.objects.create(
             titulo='Uso de EPI',

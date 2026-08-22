@@ -58,11 +58,23 @@
 
     <div class="training-calendar-grid">
         {% for dia in dias %}
-            <article class="training-day {% if dia.fora_mes %}training-day-muted{% endif %}">
+            <article class="training-day {% if dia.fora_mes %}training-day-muted{% endif %} {% if dia.preferencial and not dia.fora_mes %}training-day-preferred{% endif %}">
                 <div class="training-day-header">
-                    <strong>{{ dia.data|date:'d' }}</strong>
+                    <div>
+                        <strong>{{ dia.data|date:'d' }}</strong>
+                        {% if dia.preferencial and not dia.fora_mes %}
+                            <span>Preferencial</span>
+                        {% endif %}
+                    </div>
                     <a href="{% url 'treinamentos:criar' %}?data={{ dia.data|date:'Y-m-d' }}" aria-label="Agendar treinamento em {{ dia.data|date:'d/m/Y' }}">+</a>
                 </div>
+                {% if dia.preferencial and not dia.fora_mes %}
+                    <div class="training-preferred-slots" aria-label="Horarios preferenciais">
+                        {% for horario in horarios_preferenciais %}
+                            <a href="{% url 'treinamentos:criar' %}?data={{ dia.data|date:'Y-m-d' }}&hora={{ horario }}">{{ horario }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="training-day-items">
                     {% for treinamento in dia.treinamentos %}
                         <a class="training-event training-event-{{ treinamento.status }}" href="{% url 'treinamentos:detalhe' treinamento.pk %}">

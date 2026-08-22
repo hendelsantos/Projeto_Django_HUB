@@ -50,9 +50,11 @@ def criar(request):
             return redirect('treinamentos:detalhe', pk=treinamento.pk)
     else:
         data_inicial = request.GET.get('data') or timezone.localdate().isoformat()
+        hora_inicial = request.GET.get('hora') or ''
         form = TreinamentoForm(
             initial={
                 'data': data_inicial,
+                'hora_inicio': hora_inicial,
                 'area': 'Pintura',
                 'status': TreinamentoSeguranca.Status.AGENDADO,
             }
@@ -149,10 +151,12 @@ def calendario(request):
                 {
                     'data': dia,
                     'fora_mes': dia.month != numero_mes,
+                    'preferencial': dia.weekday() in [1, 3],
                     'treinamentos': agenda_por_dia.get(dia, []),
                 }
                 for dia in dias
             ],
+            'horarios_preferenciais': ['09:30', '13:30'],
             'total_agendados': treinamentos.filter(status=TreinamentoSeguranca.Status.AGENDADO).count(),
             'total_realizados': treinamentos.filter(status=TreinamentoSeguranca.Status.REALIZADO).count(),
             'total_cancelados': treinamentos.filter(status=TreinamentoSeguranca.Status.CANCELADO).count(),

@@ -663,6 +663,12 @@ html[data-theme="dark"] .badge {
     opacity: 0.62;
 }
 
+.training-day-preferred {
+    background:
+        linear-gradient(180deg, rgba(15, 139, 111, 0.07), rgba(15, 139, 111, 0)),
+        var(--surface);
+}
+
 .training-day-header {
     display: flex;
     align-items: center;
@@ -672,6 +678,18 @@ html[data-theme="dark"] .badge {
 
 .training-day-header strong {
     font-size: 18px;
+}
+
+.training-day-header div {
+    display: grid;
+    gap: 3px;
+}
+
+.training-day-header span {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
 }
 
 .training-day-header a {
@@ -690,6 +708,29 @@ html[data-theme="dark"] .badge {
 
 .training-day-header a:hover {
     background: var(--primary-dark);
+}
+
+.training-preferred-slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.training-preferred-slots a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    border: 1px solid rgba(15, 139, 111, 0.22);
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.training-preferred-slots a:hover {
+    border-color: var(--accent);
 }
 
 .training-day-items {

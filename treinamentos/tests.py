@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from django.utils import timezone
@@ -94,4 +96,33 @@ class TreinamentoTests(TestCase):
         exportacao = self.client.get(reverse('treinamentos:exportar_excel'))
 
         self.assertContains(painel, 'Uso de EPI')
+        self.assertEqual(exportacao.status_code, 200)
+
+    def test_pdf_digital_preenche_participantes_e_exporta_excel_individual(self):
+        with patch(
+            'treinamentos.services.extract_text_from_document',
+            return_value='Ana Pereira; 456; B; Preparacao; Paint Shop\nCarlos Lima; 789; C; Cabine; Paint Shop',
+        ):
+            response = self.client.post(
+                reverse('treinamentos:criar'),
+                {
+                    'titulo': 'PDF digital de seguranca',
+                    'categoria': TreinamentoSeguranca.Categoria.SEGURANCA,
+                    'status': TreinamentoSeguranca.Status.AGENDADO,
+                    'data': timezone.localdate().isoformat(),
+                    'hora_inicio': '10:00',
+                    'empresa': 'Paint Shop',
+                    'area': 'Pintura',
+                    'instrutor': 'Hendel',
+                    'documento': make_document(),
+                    'texto_participantes': '',
+                },
+            )
+
+        treinamento = TreinamentoSeguranca.objects.get(titulo='PDF digital de seguranca')
+        exportacao = self.client.get(reverse('treinamentos:exportar_treinamento_excel', args=[treinamento.pk]))
+
+        self.assertRedirects(response, reverse('treinamentos:detalhe', args=[treinamento.pk]))
+        self.assertIn('Ana Pereira', treinamento.texto_participantes)
+        self.assertEqual(treinamento.total_participantes, 2)
         self.assertEqual(exportacao.status_code, 200)

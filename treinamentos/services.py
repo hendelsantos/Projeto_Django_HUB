@@ -1,6 +1,30 @@
 import re
 
+from pypdf import PdfReader
+
 from .models import ParticipanteTreinamento
+
+
+def extract_text_from_document(document):
+    if not document:
+        return ''
+
+    name = (document.name or '').lower()
+    if not name.endswith('.pdf'):
+        return ''
+
+    try:
+        document.open('rb')
+        reader = PdfReader(document)
+        text_parts = [page.extract_text() or '' for page in reader.pages]
+        return '\n'.join(part.strip() for part in text_parts if part.strip())
+    except Exception:
+        return ''
+    finally:
+        try:
+            document.close()
+        except Exception:
+            pass
 
 
 def parse_participant_lines(text):
@@ -26,6 +50,19 @@ def parse_participant_lines(text):
         )
 
     return participants
+
+
+def fill_participants_from_pdf(treinamento):
+    if treinamento.texto_participantes.strip() or not treinamento.documento:
+        return False
+
+    extracted_text = extract_text_from_document(treinamento.documento)
+    if not extracted_text.strip():
+        return False
+
+    treinamento.texto_participantes = extracted_text.strip()
+    treinamento.save(update_fields=['texto_participantes', 'atualizado_em'])
+    return True
 
 
 def sync_participants(treinamento):

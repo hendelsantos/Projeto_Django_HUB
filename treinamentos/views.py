@@ -13,7 +13,7 @@ from openpyxl.utils import get_column_letter
 
 from .forms import TreinamentoForm
 from .models import TreinamentoSeguranca
-from .services import sync_participants
+from .services import fill_participants_from_pdf, sync_participants
 
 
 def index(request):
@@ -39,8 +39,14 @@ def criar(request):
         form = TreinamentoForm(request.POST, request.FILES)
         if form.is_valid():
             treinamento = form.save()
+            extracted_from_pdf = fill_participants_from_pdf(treinamento)
             sync_participants(treinamento)
-            messages.success(request, 'Treinamento cadastrado com sucesso.')
+            if extracted_from_pdf:
+                messages.success(request, 'Treinamento cadastrado e participantes extraidos do PDF com sucesso.')
+            elif treinamento.documento and not treinamento.texto_participantes.strip():
+                messages.warning(request, 'Treinamento cadastrado. O PDF parece ser scanner/imagem; cole os nomes para gerar o Excel estruturado.')
+            else:
+                messages.success(request, 'Treinamento cadastrado com sucesso.')
             return redirect('treinamentos:detalhe', pk=treinamento.pk)
     else:
         data_inicial = request.GET.get('data') or timezone.localdate().isoformat()
@@ -179,8 +185,14 @@ def editar(request, pk):
         form = TreinamentoForm(request.POST, request.FILES, instance=treinamento)
         if form.is_valid():
             treinamento = form.save()
+            extracted_from_pdf = fill_participants_from_pdf(treinamento)
             sync_participants(treinamento)
-            messages.success(request, 'Treinamento atualizado com sucesso.')
+            if extracted_from_pdf:
+                messages.success(request, 'Treinamento atualizado e participantes extraidos do PDF com sucesso.')
+            elif treinamento.documento and not treinamento.texto_participantes.strip():
+                messages.warning(request, 'Treinamento atualizado. O PDF parece ser scanner/imagem; cole os nomes para gerar o Excel estruturado.')
+            else:
+                messages.success(request, 'Treinamento atualizado com sucesso.')
             return redirect('treinamentos:detalhe', pk=treinamento.pk)
     else:
         form = TreinamentoForm(instance=treinamento)
@@ -190,6 +202,59 @@ def editar(request, pk):
         'treinamentos/form.html',
         {'form': form, 'titulo': 'Editar treinamento', 'acao': 'Salvar treinamento'},
     )
+
+
+def exportar_treinamento_excel(request, pk):
+    treinamento = get_object_or_404(TreinamentoSeguranca.objects.prefetch_related('participantes'), pk=pk)
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = 'Participantes'
+
+    sheet.merge_cells('A1:H1')
+    sheet['A1'] = f'{treinamento.titulo} - {treinamento.data.strftime("%d/%m/%Y")}'
+    sheet['A1'].font = Font(bold=True, size=16, color='FFFFFF')
+    sheet['A1'].fill = PatternFill('solid', fgColor='17212B')
+    sheet['A1'].alignment = Alignment(horizontal='center')
+
+    sheet.append(['Nome', 'Matricula', 'Empresa', 'Turno', 'Area', 'Treinamento', 'Data', 'Horario'])
+    header_fill = PatternFill('solid', fgColor='E8F3EF')
+    for cell in sheet[2]:
+        cell.font = Font(bold=True, color='17212B')
+        cell.fill = header_fill
+        cell.alignment = Alignment(horizontal='center')
+
+    for participante in treinamento.participantes.all():
+        sheet.append(
+            [
+                participante.nome,
+                participante.matricula,
+                participante.empresa,
+                participante.turno,
+                participante.area,
+                treinamento.titulo,
+                treinamento.data.strftime('%d/%m/%Y'),
+                treinamento.horario,
+            ]
+        )
+
+    for row in sheet.iter_rows(min_row=3):
+        for cell in row:
+            cell.alignment = Alignment(vertical='top', wrap_text=True)
+
+    for index, width in enumerate([34, 16, 24, 14, 24, 36, 14, 18], start=1):
+        sheet.column_dimensions[get_column_letter(index)].width = width
+
+    output = BytesIO()
+    workbook.save(output)
+    output.seek(0)
+
+    filename = f"participantes_treinamento_{treinamento.pk}_{treinamento.data.strftime('%Y_%m_%d')}.xlsx"
+    response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response
 
 
 def exportar_excel(request):

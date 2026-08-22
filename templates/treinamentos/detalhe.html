@@ -13,6 +13,7 @@
         {% if treinamento.documento %}
             <a class="button" href="{{ treinamento.documento.url }}" target="_blank" rel="noopener">Abrir documento</a>
         {% endif %}
+        <a class="button button-secondary" href="{% url 'treinamentos:exportar_treinamento_excel' treinamento.pk %}">Exportar Excel</a>
         <a class="button button-secondary" href="{% url 'treinamentos:editar' treinamento.pk %}">Editar</a>
         <a class="button button-secondary" href="{% url 'treinamentos:calendario' %}?mes={{ treinamento.data|date:'Y-m' }}">Calendario</a>
         <a class="button button-secondary" href="{% url 'treinamentos:painel' %}">Voltar</a>

@@ -35,7 +35,7 @@ class TreinamentoForm(forms.ModelForm):
             'texto_participantes': forms.Textarea(
                 attrs={
                     'rows': 8,
-                    'placeholder': 'Cole os nomes do scanner, um por linha. Opcional: Nome; matricula; turno; area; empresa',
+                    'placeholder': 'Opcional. Em PDF digital o sistema tenta ler sozinho. Para scanner/imagem, cole os nomes aqui. Formato: Nome; matricula; turno; area; empresa',
                 }
             ),
             'observacoes': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Observacoes, conteudo aplicado ou pontos importantes'}),

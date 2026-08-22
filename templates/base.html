@@ -9,7 +9,7 @@
         const savedTheme = localStorage.getItem('paintHubTheme') || 'light';
         document.documentElement.dataset.theme = savedTheme;
     </script>
-    <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}?v=3" type="image/svg+xml">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/theme.js' %}" defer></script>
     <script src="{% static 'js/followup-toasts.js' %}" defer></script>

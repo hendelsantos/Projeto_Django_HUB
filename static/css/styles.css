@@ -105,15 +105,15 @@ a {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    min-width: 230px;
+    min-width: 250px;
     font-size: 18px;
     font-weight: 700;
 }
 
 .brand-logo {
     display: block;
-    width: 230px;
-    height: 56px;
+    width: 250px;
+    height: 64px;
     padding: 2px 8px 2px 0;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.78);
@@ -916,7 +916,7 @@ td a {
 
     .brand,
     .brand-logo {
-        width: min(100%, 230px);
+        width: min(100%, 250px);
         min-width: 0;
     }
 

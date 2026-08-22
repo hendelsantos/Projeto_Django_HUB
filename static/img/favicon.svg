@@ -1,20 +1,31 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="markGradient" x1="7" y1="8" x2="57" y2="56" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#17324D"/>
-      <stop offset="0.58" stop-color="#1D5FD6"/>
+    <linearGradient id="robotGradient" x1="6" y1="8" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="0.52" stop-color="#1D5FD6"/>
       <stop offset="1" stop-color="#0F8B6F"/>
     </linearGradient>
-    <linearGradient id="paintStroke" x1="11" y1="50" x2="52" y2="15" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#F7C948"/>
-      <stop offset="0.55" stop-color="#34D399"/>
-      <stop offset="1" stop-color="#60A5FA"/>
+    <linearGradient id="sprayGradient" x1="38" y1="12" x2="62" y2="34" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="0.5" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#F7C948"/>
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="16" fill="#FFFFFF"/>
-  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#markGradient)"/>
-  <path d="M14 46C22.5 28.4 34.2 18.8 50 16" stroke="url(#paintStroke)" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="50" cy="16" r="5" fill="#F7C948"/>
-  <path d="M17 18H29C35.6 18 39.8 22 39.8 27.6C39.8 33.2 35.6 37.2 29 37.2H25V47H17V18ZM25 25V30.6H28.8C30.8 30.6 32 29.5 32 27.8C32 26.1 30.8 25 28.8 25H25Z" fill="#FFFFFF"/>
-  <path d="M39.8 30H47V47H39.8V40.8H33.6V34.7H39.8V30Z" fill="#FFFFFF" opacity="0.92"/>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="#F8FAFC"/>
+  <path d="M12 54H34" stroke="#0F172A" stroke-width="6" stroke-linecap="round"/>
+  <path d="M18 51V43C18 39.1 20.2 35.5 23.7 33.8L29.5 31" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+  <rect x="22.2" y="31.1" width="26" height="12" rx="6" transform="rotate(-34 22.2 31.1)" fill="url(#robotGradient)"/>
+  <circle cx="28.5" cy="38.2" r="2.6" fill="#FFFFFF"/>
+  <circle cx="42.2" cy="28.8" r="2.6" fill="#FFFFFF"/>
+  <path d="M41.5 20.2L35.5 11.8L31 23.4L38.5 21.8L41.5 20.2Z" fill="#0F172A"/>
+  <circle cx="27.5" cy="13.5" r="8.2" fill="#0F172A"/>
+  <circle cx="27.5" cy="13.5" r="3.6" fill="#FFFFFF"/>
+  <path d="M39 12.8H54" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M56 12.8H59" stroke="#0F172A" stroke-width="6" stroke-linecap="round"/>
+  <path d="M51 19C54.2 20 56.8 21.4 59.2 23.4" stroke="url(#sprayGradient)" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M49 24C52.5 26 55 28.3 57 31.3" stroke="url(#sprayGradient)" stroke-width="2.8" stroke-linecap="round"/>
+  <circle cx="59" cy="18" r="1.7" fill="#60A5FA"/>
+  <circle cx="61" cy="25.2" r="1.5" fill="#34D399"/>
+  <circle cx="57.5" cy="35" r="1.6" fill="#F7C948"/>
 </svg>

@@ -1,26 +1,37 @@
-<svg width="230" height="56" viewBox="0 0 230 56" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+<svg width="250" height="64" viewBox="0 0 250 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">Paint HUB Soluções Digitais</title>
-  <desc id="desc">Logo do Paint HUB Soluções Digitais</desc>
+  <desc id="desc">Logo com robô de pintura automotiva do Paint HUB Soluções Digitais</desc>
   <defs>
-    <linearGradient id="markGradient" x1="6" y1="7" x2="51" y2="50" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#17324D"/>
-      <stop offset="0.58" stop-color="#1D5FD6"/>
+    <linearGradient id="robotGradient" x1="6" y1="8" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="0.52" stop-color="#1D5FD6"/>
       <stop offset="1" stop-color="#0F8B6F"/>
     </linearGradient>
-    <linearGradient id="paintStroke" x1="9" y1="44" x2="47" y2="14" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#F7C948"/>
-      <stop offset="0.55" stop-color="#34D399"/>
-      <stop offset="1" stop-color="#60A5FA"/>
+    <linearGradient id="sprayGradient" x1="36" y1="9" x2="60" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="0.5" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#F7C948"/>
     </linearGradient>
   </defs>
-  <rect x="1" y="1" width="54" height="54" rx="14" fill="#FFFFFF"/>
-  <rect x="3.5" y="3.5" width="49" height="49" rx="12" fill="url(#markGradient)"/>
-  <path d="M13 39.5C20.5 23.8 31.2 15.2 45 13" stroke="url(#paintStroke)" stroke-width="7" stroke-linecap="round"/>
-  <circle cx="43.5" cy="13.5" r="4.5" fill="#F7C948"/>
-  <path d="M15 16H25.4C31.1 16 34.8 19.45 34.8 24.35C34.8 29.25 31.1 32.7 25.4 32.7H21.7V40H15V16ZM21.7 21.8V26.9H25.2C27 26.9 28.1 25.9 28.1 24.35C28.1 22.8 27 21.8 25.2 21.8H21.7Z" fill="#FFFFFF"/>
-  <path d="M34.8 26.2H41.2V40H34.8V34.9H29.4V29.6H34.8V26.2Z" fill="#FFFFFF" opacity="0.92"/>
-  <text x="68" y="23" fill="#17212B" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="0">Paint HUB</text>
-  <text x="68" y="41" fill="#0F8B6F" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="0">Soluções Digitais</text>
-  <path d="M68 48H190" stroke="#DDE3EA" stroke-width="2" stroke-linecap="round"/>
-  <path d="M68 48H128" stroke="#F7C948" stroke-width="2" stroke-linecap="round"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" fill="#FFFFFF"/>
+  <rect x="4" y="4" width="56" height="56" rx="13" fill="#F8FAFC"/>
+  <path d="M12 53H34" stroke="#0F172A" stroke-width="6" stroke-linecap="round"/>
+  <path d="M18 50V42C18 38.1 20.2 34.5 23.7 32.8L29.5 30" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+  <rect x="22.2" y="30.1" width="26" height="12" rx="6" transform="rotate(-34 22.2 30.1)" fill="url(#robotGradient)"/>
+  <circle cx="28.5" cy="37.2" r="2.6" fill="#FFFFFF"/>
+  <circle cx="42.2" cy="27.8" r="2.6" fill="#FFFFFF"/>
+  <path d="M41.5 19.2L35.5 10.8L31 22.4L38.5 20.8L41.5 19.2Z" fill="#0F172A"/>
+  <circle cx="27.5" cy="12.5" r="8.2" fill="#0F172A"/>
+  <circle cx="27.5" cy="12.5" r="3.6" fill="#FFFFFF"/>
+  <path d="M39 11.8H54" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M56 11.8H59" stroke="#0F172A" stroke-width="6" stroke-linecap="round"/>
+  <path d="M51 18C54.2 19 56.8 20.4 59.2 22.4" stroke="url(#sprayGradient)" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M49 23C52.5 25 55 27.3 57 30.3" stroke="url(#sprayGradient)" stroke-width="2.8" stroke-linecap="round"/>
+  <circle cx="59" cy="17" r="1.7" fill="#60A5FA"/>
+  <circle cx="61" cy="24.2" r="1.5" fill="#34D399"/>
+  <circle cx="57.5" cy="34" r="1.6" fill="#F7C948"/>
+  <text x="76" y="27" fill="#17212B" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800" letter-spacing="0">Paint HUB</text>
+  <text x="76" y="46" fill="#0F8B6F" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="0">Soluções Digitais</text>
+  <path d="M76 54H206" stroke="#DDE3EA" stroke-width="2" stroke-linecap="round"/>
+  <path d="M76 54H142" stroke="#F7C948" stroke-width="2" stroke-linecap="round"/>
 </svg>

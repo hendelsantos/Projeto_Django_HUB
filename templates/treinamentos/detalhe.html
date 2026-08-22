@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ treinamento.titulo }} | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="detail-header">
+    <div class="intro">
+        <p class="eyebrow">Treinamento #{{ treinamento.id }}</p>
+        <h1>{{ treinamento.titulo }}</h1>
+        <p>{{ treinamento.observacoes|default:'Documento e lista de participantes armazenados para rastreabilidade.' }}</p>
+    </div>
+    <div class="actions">
+        <a class="button" href="{{ treinamento.documento.url }}" target="_blank" rel="noopener">Abrir documento</a>
+        <a class="button button-secondary" href="{% url 'treinamentos:editar' treinamento.pk %}">Editar</a>
+        <a class="button button-secondary" href="{% url 'treinamentos:painel' %}">Voltar</a>
+    </div>
+</section>
+
+<section class="metric-grid" aria-label="Resumo do treinamento">
+    <article class="metric-card">
+        <span>Participantes</span>
+        <strong>{{ treinamento.total_participantes }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Empresa</span>
+        <strong class="metric-text">{{ treinamento.empresa }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Data</span>
+        <strong class="metric-text">{{ treinamento.data|date:'d/m/Y' }}</strong>
+    </article>
+</section>
+
+<section class="detail-grid">
+    <article class="upload-panel">
+        <h2>Informacoes</h2>
+        <dl class="detail-list">
+            <div><dt>Categoria</dt><dd>{{ treinamento.get_categoria_display }}</dd></div>
+            <div><dt>Area</dt><dd>{{ treinamento.area }}</dd></div>
+            <div><dt>Instrutor</dt><dd>{{ treinamento.instrutor|default:'-' }}</dd></div>
+            <div><dt>Carga horaria</dt><dd>{{ treinamento.carga_horaria|default:'-' }}</dd></div>
+            <div><dt>Validade</dt><dd>{{ treinamento.validade|date:'d/m/Y'|default:'-' }}</dd></div>
+            <div><dt>Documento</dt><dd><a href="{{ treinamento.documento.url }}" target="_blank" rel="noopener">Ver arquivo escaneado</a></dd></div>
+        </dl>
+    </article>
+
+    <article class="upload-panel compact-table">
+        <h2>Estratificacao</h2>
+        <h3>Por empresa</h3>
+        <table>
+            <tbody>
+                {% for row in por_empresa %}
+                    <tr><td>{{ row.empresa|default:'Nao informado' }}</td><td>{{ row.total }}</td></tr>
+                {% empty %}
+                    <tr><td>Nenhum participante.</td><td></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Por area</h3>
+        <table>
+            <tbody>
+                {% for row in por_area %}
+                    <tr><td>{{ row.area|default:'Nao informado' }}</td><td>{{ row.total }}</td></tr>
+                {% empty %}
+                    <tr><td>Nenhum participante.</td><td></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Por turno</h3>
+        <table>
+            <tbody>
+                {% for row in por_turno %}
+                    <tr><td>{{ row.turno|default:'Nao informado' }}</td><td>{{ row.total }}</td></tr>
+                {% empty %}
+                    <tr><td>Nenhum participante.</td><td></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </article>
+</section>
+
+<section class="table-panel">
+    <div class="table-header">
+        <h2>Participantes</h2>
+    </div>
+    <div class="responsive-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Matricula</th>
+                    <th>Empresa</th>
+                    <th>Turno</th>
+                    <th>Area</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participante in treinamento.participantes.all %}
+                    <tr>
+                        <td>{{ participante.nome }}</td>
+                        <td>{{ participante.matricula|default:'-' }}</td>
+                        <td>{{ participante.empresa|default:'-' }}</td>
+                        <td>{{ participante.turno|default:'-' }}</td>
+                        <td>{{ participante.area|default:'-' }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Nenhum participante registrado.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

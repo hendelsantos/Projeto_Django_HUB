@@ -16,6 +16,7 @@ from chamados_ti.models import ChamadoTI
 from headcount.models import BirthdayName, HeadcountMember
 from roupeiro.models import Armario
 from tarefas.models import Tarefa
+from treinamentos.models import ParticipanteTreinamento, TreinamentoSeguranca
 from zeladoria.models import ChamadoZeladoria
 
 from .report_sources import build_consolidated_report
@@ -87,6 +88,14 @@ def home(request):
             'status': 'Follow-up',
             'icon': 'KAN',
         },
+        {
+            'name': 'Treinamentos de Seguranca',
+            'description': 'Guarde documentos escaneados, participantes, empresas e datas dos treinamentos da pintura.',
+            'details': 'Use para rastrear presencas, anexar o scanner do treinamento, estratificar por empresa e exportar para auditoria.',
+            'url_name': 'treinamentos:index',
+            'status': 'Seguranca',
+            'icon': 'TRN',
+        },
     ]
 
     if request.user.is_authenticated:
@@ -135,6 +144,7 @@ def buscar(request):
         resultados.extend(buscar_zeladoria(query))
         resultados.extend(buscar_headcount(query))
         resultados.extend(buscar_tarefas(query))
+        resultados.extend(buscar_treinamentos(query))
 
     return render(
         request,
@@ -268,6 +278,46 @@ def buscar_tarefas(query):
         }
         for tarefa in tarefas
     ]
+
+
+def buscar_treinamentos(query):
+    treinamentos = TreinamentoSeguranca.objects.filter(
+        Q(titulo__icontains=query)
+        | Q(empresa__icontains=query)
+        | Q(area__icontains=query)
+        | Q(instrutor__icontains=query)
+        | Q(observacoes__icontains=query)
+    )[:10]
+    participantes = ParticipanteTreinamento.objects.filter(
+        Q(nome__icontains=query)
+        | Q(matricula__icontains=query)
+        | Q(empresa__icontains=query)
+        | Q(area__icontains=query)
+        | Q(turno__icontains=query)
+    ).select_related('treinamento')[:10]
+
+    resultados = [
+        {
+            'modulo': 'Treinamentos',
+            'titulo': treinamento.titulo,
+            'descricao': f'{treinamento.empresa} - {treinamento.data.strftime("%d/%m/%Y")}',
+            'extra': f'{treinamento.total_participantes} participantes',
+            'url': reverse('treinamentos:detalhe', args=[treinamento.pk]),
+        }
+        for treinamento in treinamentos
+    ]
+
+    resultados.extend(
+        {
+            'modulo': 'Participante de treinamento',
+            'titulo': participante.nome,
+            'descricao': participante.treinamento.titulo,
+            'extra': participante.empresa or participante.area or 'Treinamento',
+            'url': reverse('treinamentos:detalhe', args=[participante.treinamento.pk]),
+        }
+        for participante in participantes
+    )
+    return resultados
 
 
 def relatorios(request):

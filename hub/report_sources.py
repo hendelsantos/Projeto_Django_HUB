@@ -1,9 +1,11 @@
 from django.db.models import Count
+from django.utils import timezone
 
 from chamados_ti.models import ChamadoTI
 from headcount.models import HeadcountImport
 from roupeiro.models import Armario
 from tarefas.models import Tarefa
+from treinamentos.models import TreinamentoSeguranca
 from zeladoria.models import ChamadoZeladoria
 
 
@@ -241,6 +243,40 @@ def get_tarefas_source(ano, numero_mes):
     }
 
 
+def get_treinamentos_source(ano, numero_mes):
+    treinamentos = TreinamentoSeguranca.objects.filter(data__year=ano, data__month=numero_mes)
+    total_participantes = sum(treinamento.total_participantes for treinamento in treinamentos)
+
+    return {
+        'nome': 'Treinamentos de Seguranca',
+        'slug': 'treinamentos',
+        'tipo': 'Metricas e exportacao',
+        'tem_dados_consolidados': True,
+        'pendentes_rotulo': 'vencidos',
+        'total': treinamentos.count(),
+        'concluidos': total_participantes,
+        'cancelados': 0,
+        'pendentes': treinamentos.filter(validade__lt=timezone.localdate()).count(),
+        'sem_ticket': treinamentos.filter(total_participantes=0).count(),
+        'por_status': count_by_field(treinamentos, 'categoria', TreinamentoSeguranca.Categoria.choices),
+        'por_categoria': count_by_field(treinamentos.exclude(empresa=''), 'empresa'),
+        'items': [
+            {
+                'area': 'Treinamentos',
+                'titulo': treinamento.titulo,
+                'solicitante': treinamento.instrutor or treinamento.empresa,
+                'referencia': treinamento.empresa,
+                'status': f'{treinamento.total_participantes} participantes',
+                'ticket': '',
+                'data': treinamento.criado_em,
+                'detalhe': f'Data: {treinamento.data.strftime("%d/%m/%Y")} | Area: {treinamento.area}',
+                'follow_up': treinamento.observacoes or 'Documento escaneado armazenado.',
+            }
+            for treinamento in treinamentos
+        ],
+    }
+
+
 REPORT_SOURCE_BUILDERS = [
     get_ti_source,
     get_zeladoria_source,
@@ -248,6 +284,7 @@ REPORT_SOURCE_BUILDERS = [
     get_roupeiro_source,
     get_headcount_source,
     get_tarefas_source,
+    get_treinamentos_source,
 ]
 
 

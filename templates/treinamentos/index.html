@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Treinamentos | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Seguranca da pintura</p>
+    <h1>Controle de treinamentos</h1>
+    <p>Guarde documentos escaneados, participantes, datas, empresas e evidencias dos treinamentos aplicados na pintura.</p>
+</section>
+
+<section class="metric-grid" aria-label="Resumo de treinamentos">
+    <article class="metric-card">
+        <span>Treinamentos no mes</span>
+        <strong>{{ treinamentos_mes }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Participantes no mes</span>
+        <strong>{{ participantes_mes }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Vencidos</span>
+        <strong>{{ vencidos }}</strong>
+    </article>
+</section>
+
+<section class="action-grid">
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">+</span>
+            <span class="badge">Scanner</span>
+        </div>
+        <div>
+            <h2>Novo treinamento</h2>
+            <p>Cadastre a data, empresa, instrutor, documento escaneado e participantes do treinamento.</p>
+        </div>
+        <a class="button" href="{% url 'treinamentos:criar' %}">Cadastrar treinamento</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">PAIN</span>
+            <span class="badge">Gestao</span>
+        </div>
+        <div>
+            <h2>Painel de controle</h2>
+            <p>Filtre por data, empresa, categoria, instrutor ou nome do participante.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'treinamentos:painel' %}">Ver painel</a>
+    </article>
+
+    <article class="tool-card">
+        <div class="tool-card-header">
+            <span class="tool-icon">XLS</span>
+            <span class="badge">Excel</span>
+        </div>
+        <div>
+            <h2>Exportar base</h2>
+            <p>Gere uma planilha com treinamentos e participantes para auditoria e rastreabilidade.</p>
+        </div>
+        <a class="button button-secondary" href="{% url 'treinamentos:exportar_excel' %}">Exportar Excel</a>
+    </article>
+</section>
+{% endblock %}

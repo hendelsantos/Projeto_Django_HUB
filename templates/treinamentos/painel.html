@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Painel de Treinamentos | Ferramentas digitais Paint Shop{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Rastreabilidade</p>
+    <h1>Painel de Treinamentos</h1>
+    <p>Consulte os treinamentos por mes, empresa, categoria, instrutor ou participante.</p>
+</section>
+
+<section class="toolbar-panel">
+    <form method="get" class="filter-form training-filter-form">
+        <label>
+            <span>Busca</span>
+            <input type="search" name="busca" value="{{ busca }}" placeholder="Treinamento, instrutor, area ou participante">
+        </label>
+        <label>
+            <span>Empresa</span>
+            <input type="search" name="empresa" value="{{ empresa }}" placeholder="Empresa">
+        </label>
+        <label>
+            <span>Categoria</span>
+            <select name="categoria">
+                <option value="">Todas</option>
+                {% for value, label in categoria_choices %}
+                    <option value="{{ value }}" {% if value == categoria_atual %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Mes</span>
+            <input type="month" name="mes" value="{{ mes }}">
+        </label>
+        <button class="button" type="submit">Filtrar</button>
+        <a class="button button-secondary" href="{% url 'treinamentos:exportar_excel' %}">Exportar Excel</a>
+    </form>
+</section>
+
+<section class="table-panel">
+    <div class="table-header">
+        <h2>Treinamentos cadastrados</h2>
+        <a class="button button-secondary" href="{% url 'treinamentos:criar' %}">Novo treinamento</a>
+    </div>
+
+    <div class="responsive-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Treinamento</th>
+                    <th>Empresa</th>
+                    <th>Area</th>
+                    <th>Categoria</th>
+                    <th>Instrutor</th>
+                    <th>Participantes</th>
+                    <th>Validade</th>
+                    <th>Acao</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for treinamento in treinamentos %}
+                    <tr>
+                        <td>{{ treinamento.data|date:'d/m/Y' }}</td>
+                        <td>{{ treinamento.titulo }}</td>
+                        <td>{{ treinamento.empresa }}</td>
+                        <td>{{ treinamento.area }}</td>
+                        <td>{{ treinamento.get_categoria_display }}</td>
+                        <td>{{ treinamento.instrutor|default:'-' }}</td>
+                        <td>{{ treinamento.total_participantes }}</td>
+                        <td>
+                            {{ treinamento.validade|date:'d/m/Y'|default:'-' }}
+                            {% if treinamento.esta_vencido %}<span class="badge badge-alert">Vencido</span>{% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'treinamentos:detalhe' treinamento.pk %}">Ver</a>
+                            <a href="{% url 'treinamentos:editar' treinamento.pk %}">Editar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9">Nenhum treinamento encontrado.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

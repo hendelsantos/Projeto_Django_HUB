@@ -476,6 +476,12 @@ html[data-theme="dark"] .badge {
     line-height: 1;
 }
 
+.metric-card .metric-text {
+    font-size: 20px;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
 .upload-summary {
     display: flex;
     align-items: center;
@@ -601,6 +607,10 @@ html[data-theme="dark"] .badge {
 
 .global-search-page {
     grid-template-columns: minmax(240px, 1fr) auto;
+}
+
+.training-filter-form {
+    grid-template-columns: minmax(220px, 1.3fr) minmax(160px, 0.8fr) minmax(160px, 0.8fr) minmax(140px, 0.7fr) auto auto;
 }
 
 .table-header,
@@ -1470,6 +1480,7 @@ td a {
     .locker-filter-form,
     .locker-map-filter,
     .global-search-page,
+    .training-filter-form,
     .metric-filter {
         grid-template-columns: 1fr;
     }
